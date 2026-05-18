@@ -25,7 +25,7 @@ export default function MainMenu({ onStart, onOptions }: MainMenuProps) {
       {/* PALOPTICAL Background */}
       <div className="absolute inset-0 z-0">
         <img src="/PALOPTICAL.png" alt="PAL Optical" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-linear-to-b from-black/60 to-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/40" />
       </div>
       <div 
         style={{ 
@@ -57,7 +57,7 @@ export default function MainMenu({ onStart, onOptions }: MainMenuProps) {
           transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
           className="w-32 h-32 flex items-center justify-center overflow-hidden mb-6"
         >
-          <img src="/android-chrome-512x512.png" alt="Logo" className="w-full h-full object-contain pixelated" />
+          <img src="/IAMJAMES.png" alt="Logo" className="w-full h-full object-contain pixelated" />
         </motion.div>
 
         <h1 className="text-7xl font-black tracking-tight text-yellow-300 drop-shadow-[8px_8px_0_rgba(0,0,0,1)] italic mb-8 text-center">
@@ -73,7 +73,7 @@ export default function MainMenu({ onStart, onOptions }: MainMenuProps) {
             whileHover={{ scale: 1.05, x: 10 }}
             whileTap={{ scale: 0.95 }}
             onClick={onStart}
-            className="group relative flex items-center justify-center gap-4 px-12 py-6 bg-white text-black font-black transition-all shadow-[8px_8px_0_0_rgba(59,130,246,1)] hover:shadow-none"
+            className="group relative flex items-center justify-center gap-4 px-12 py-6 bg-yellow-400 text-black font-black transition-all shadow-[8px_8px_0_0_rgba(0,0,0,1)] hover:shadow-none"
           >
             <Play className="w-6 h-6 fill-black" />
             <span className="text-xl italic uppercase">Start</span>
@@ -83,7 +83,7 @@ export default function MainMenu({ onStart, onOptions }: MainMenuProps) {
             whileHover={{ scale: 1.05, x: 10 }}
             whileTap={{ scale: 0.95 }}
             onClick={onOptions}
-            className="group relative flex items-center justify-center gap-4 px-12 py-6 bg-black border-4 border-white text-white font-black transition-all shadow-[8px_8px_0_0_rgba(255,255,255,0.2)] hover:shadow-none"
+            className="group relative flex items-center justify-center gap-4 px-12 py-6 bg-black border-4 border-yellow-400 text-yellow-400 font-black transition-all shadow-[8px_8px_0_0_rgba(255,197,3,0.2)] hover:shadow-none"
           >
             <Settings className="w-6 h-6" />
             <span className="text-xl italic uppercase">Options</span>
@@ -129,7 +129,7 @@ export default function MainMenu({ onStart, onOptions }: MainMenuProps) {
         </motion.div>
       </div>
 
-      <div className="absolute bottom-12 text-white/20 text-[6px] font-black uppercase tracking-[6px]">
+      <div className="absolute bottom-12 text-yellow-400/30 text-[6px] font-black uppercase tracking-[6px]">
         (C) 2024 PAL OPTICAL LTD. ALL RIGHTS RESERVED
       </div>
     </div>
