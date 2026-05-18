@@ -1,0 +1,36 @@
+{
+  "group_id": null,
+  "states": [
+    {
+      "character": {
+        "id": "8258dc66-fdea-453d-9120-7f629f6948e6",
+        "name": "a modern day npc with random clothing ",
+        "prompt": "a modern day npc with random clothing ",
+        "size": {
+          "width": 68,
+          "height": 68
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-05-15T06:08:49.729399+00:00"
+      },
+      "folder": "states/a_modern_day_npc_with_random_clothing",
+      "frames": {
+        "rotations": {
+          "south": "states/a_modern_day_npc_with_random_clothing/rotations/south.png",
+          "south-east": "states/a_modern_day_npc_with_random_clothing/rotations/south-east.png",
+          "east": "states/a_modern_day_npc_with_random_clothing/rotations/east.png",
+          "north-east": "states/a_modern_day_npc_with_random_clothing/rotations/north-east.png",
+          "north": "states/a_modern_day_npc_with_random_clothing/rotations/north.png",
+          "north-west": "states/a_modern_day_npc_with_random_clothing/rotations/north-west.png",
+          "west": "states/a_modern_day_npc_with_random_clothing/rotations/west.png",
+          "south-west": "states/a_modern_day_npc_with_random_clothing/rotations/south-west.png"
+        },
+        "animations": {}
+      }
+    }
+  ],
+  "export_version": "3.0",
+  "export_date": "2026-05-15T06:10:39.947746"
+}

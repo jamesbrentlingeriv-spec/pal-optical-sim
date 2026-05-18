@@ -1,0 +1,36 @@
+{
+  "group_id": null,
+  "states": [
+    {
+      "character": {
+        "id": "14ba0cf9-9d9f-4020-81a9-7f0a592e2f9a",
+        "name": "a man with brown shirt with yellow logo and brown shorts and brown hat. he has a bunch of boxes in his arms",
+        "prompt": "a man with brown shirt with yellow logo and brown shorts and brown hat. he has a bunch of boxes in his arms",
+        "size": {
+          "width": 68,
+          "height": 68
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-05-18T01:24:14.235525+00:00"
+      },
+      "folder": "a_man_with_brown_shirt_with_yellow_logo_and_brown",
+      "frames": {
+        "rotations": {
+          "south": "a_man_with_brown_shirt_with_yellow_logo_and_brown/rotations/south.png",
+          "south-east": "a_man_with_brown_shirt_with_yellow_logo_and_brown/rotations/south-east.png",
+          "east": "a_man_with_brown_shirt_with_yellow_logo_and_brown/rotations/east.png",
+          "north-east": "a_man_with_brown_shirt_with_yellow_logo_and_brown/rotations/north-east.png",
+          "north": "a_man_with_brown_shirt_with_yellow_logo_and_brown/rotations/north.png",
+          "north-west": "a_man_with_brown_shirt_with_yellow_logo_and_brown/rotations/north-west.png",
+          "west": "a_man_with_brown_shirt_with_yellow_logo_and_brown/rotations/west.png",
+          "south-west": "a_man_with_brown_shirt_with_yellow_logo_and_brown/rotations/south-west.png"
+        },
+        "animations": {}
+      }
+    }
+  ],
+  "export_version": "3.0",
+  "export_date": "2026-05-18T01:25:33.025000"
+}

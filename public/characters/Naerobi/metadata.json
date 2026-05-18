@@ -1,0 +1,36 @@
+{
+  "group_id": null,
+  "states": [
+    {
+      "character": {
+        "id": "7b964de0-4038-4942-a404-a9030fab9225",
+        "name": "a hispanic male with long curly hair wearing black scrubs",
+        "prompt": "a hispanic male with long curly hair wearing black scrubs",
+        "size": {
+          "width": 68,
+          "height": 68
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-05-15T06:31:05.98584+00:00"
+      },
+      "folder": "states/a_hispanic_male_with_long_curly_hair_wearing_black",
+      "frames": {
+        "rotations": {
+          "south": "states/a_hispanic_male_with_long_curly_hair_wearing_black/rotations/south.png",
+          "south-east": "states/a_hispanic_male_with_long_curly_hair_wearing_black/rotations/south-east.png",
+          "east": "states/a_hispanic_male_with_long_curly_hair_wearing_black/rotations/east.png",
+          "north-east": "states/a_hispanic_male_with_long_curly_hair_wearing_black/rotations/north-east.png",
+          "north": "states/a_hispanic_male_with_long_curly_hair_wearing_black/rotations/north.png",
+          "north-west": "states/a_hispanic_male_with_long_curly_hair_wearing_black/rotations/north-west.png",
+          "west": "states/a_hispanic_male_with_long_curly_hair_wearing_black/rotations/west.png",
+          "south-west": "states/a_hispanic_male_with_long_curly_hair_wearing_black/rotations/south-west.png"
+        },
+        "animations": {}
+      }
+    }
+  ],
+  "export_version": "3.0",
+  "export_date": "2026-05-15T06:39:32.958040"
+}

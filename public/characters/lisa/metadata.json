@@ -1,0 +1,36 @@
+{
+  "group_id": null,
+  "states": [
+    {
+      "character": {
+        "id": "7c4104d5-7b8d-4a20-879d-d0be70924a40",
+        "name": "older lady with long blonde",
+        "prompt": "older lady with long blonde hair and wears eyeglasses. she is wearing a purple blouse and black leggings",
+        "size": {
+          "width": 92,
+          "height": 92
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-05-16T02:51:45.246818+00:00"
+      },
+      "folder": "states/older_lady_with_long_blonde",
+      "frames": {
+        "rotations": {
+          "south": "states/older_lady_with_long_blonde/rotations/south.png",
+          "south-east": "states/older_lady_with_long_blonde/rotations/south-east.png",
+          "east": "states/older_lady_with_long_blonde/rotations/east.png",
+          "north-east": "states/older_lady_with_long_blonde/rotations/north-east.png",
+          "north": "states/older_lady_with_long_blonde/rotations/north.png",
+          "north-west": "states/older_lady_with_long_blonde/rotations/north-west.png",
+          "west": "states/older_lady_with_long_blonde/rotations/west.png",
+          "south-west": "states/older_lady_with_long_blonde/rotations/south-west.png"
+        },
+        "animations": {}
+      }
+    }
+  ],
+  "export_version": "3.0",
+  "export_date": "2026-05-16T03:15:11.339699"
+}
