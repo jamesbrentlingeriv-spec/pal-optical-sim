@@ -20,8 +20,13 @@ export default function MainMenu({ onStart, onOptions }: MainMenuProps) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="flex flex-col items-center justify-center h-full bg-[#1a1a1a] relative overflow-hidden"
+      className="flex flex-col items-center justify-center h-full relative overflow-hidden"
     >
+      {/* PALOPTICAL Background */}
+      <div className="absolute inset-0 z-0">
+        <img src="/PALOPTICAL.png" alt="PAL Optical" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-linear-to-b from-black/60 to-black/40" />
+      </div>
       <div 
         style={{ 
           transform: `scale(${scale})`,
@@ -55,11 +60,11 @@ export default function MainMenu({ onStart, onOptions }: MainMenuProps) {
           <img src="/android-chrome-512x512.png" alt="Logo" className="w-full h-full object-contain pixelated" />
         </motion.div>
 
-        <h1 className="text-7xl font-black tracking-tight text-white drop-shadow-[8px_8px_0_rgba(59,130,246,1)] italic mb-8 text-center">
-          PAL OPTICAL <br/><span className="text-white">SIMULATOR</span>
+        <h1 className="text-7xl font-black tracking-tight text-yellow-300 drop-shadow-[8px_8px_0_rgba(0,0,0,1)] italic mb-8 text-center">
+          PAL OPTICAL <br/><span className="text-yellow-300">SIMULATOR</span>
         </h1>
 
-        <p className="text-blue-400 text-sm font-black uppercase tracking-[12px] animate-pulse mb-8">
+        <p className="text-yellow-400 text-sm font-black uppercase tracking-[12px] animate-pulse mb-8">
           PRESS START TO BEGIN
         </p>
 
