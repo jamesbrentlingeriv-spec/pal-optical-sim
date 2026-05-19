@@ -1,0 +1,36 @@
+{
+  "group_id": null,
+  "states": [
+    {
+      "character": {
+        "id": "6fa8f0dd-8a43-45be-a617-0586138be893",
+        "name": "OLDER MAN HEAVYSET WITH BALDING HAIR ON TOP AND BLACK AND GREY HAIR ON SIDES. WEAR BURGUNDY SUIT JACKET AND BURGUNDY PANTS WITH WHITE BUTTON DOWN UNDERNEATH THE BLAZER",
+        "prompt": "OLDER MAN HEAVYSET WITH BALDING HAIR ON TOP AND BLACK AND GREY HAIR ON SIDES. WEAR BURGUNDY SUIT JACKET AND BURGUNDY PANTS WITH WHITE BUTTON DOWN UNDERNEATH THE BLAZER",
+        "size": {
+          "width": 68,
+          "height": 68
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-05-18T17:57:28.373048+00:00"
+      },
+      "folder": "OLDER_MAN_HEAVYSET_WITH_BALDING_HAIR_ON_TOP_AND_BL",
+      "frames": {
+        "rotations": {
+          "south": "OLDER_MAN_HEAVYSET_WITH_BALDING_HAIR_ON_TOP_AND_BL/rotations/south.png",
+          "south-east": "OLDER_MAN_HEAVYSET_WITH_BALDING_HAIR_ON_TOP_AND_BL/rotations/south-east.png",
+          "east": "OLDER_MAN_HEAVYSET_WITH_BALDING_HAIR_ON_TOP_AND_BL/rotations/east.png",
+          "north-east": "OLDER_MAN_HEAVYSET_WITH_BALDING_HAIR_ON_TOP_AND_BL/rotations/north-east.png",
+          "north": "OLDER_MAN_HEAVYSET_WITH_BALDING_HAIR_ON_TOP_AND_BL/rotations/north.png",
+          "north-west": "OLDER_MAN_HEAVYSET_WITH_BALDING_HAIR_ON_TOP_AND_BL/rotations/north-west.png",
+          "west": "OLDER_MAN_HEAVYSET_WITH_BALDING_HAIR_ON_TOP_AND_BL/rotations/west.png",
+          "south-west": "OLDER_MAN_HEAVYSET_WITH_BALDING_HAIR_ON_TOP_AND_BL/rotations/south-west.png"
+        },
+        "animations": {}
+      }
+    }
+  ],
+  "export_version": "3.0",
+  "export_date": "2026-05-18T18:00:35.533807"
+}

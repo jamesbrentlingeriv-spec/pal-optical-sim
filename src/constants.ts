@@ -128,6 +128,21 @@ export const NPCS: NPC[] = [
     spriteBase: 'sara'
   },
   { 
+    id: 'drklecker', 
+    name: 'Dr. Klecker', 
+    role: 'Optometrist', 
+    x: 200, 
+    y: 300, 
+    avatar: 'https://images.unsplash.com/photo-1594824813573-c46fe469cd43?auto=format&fit=crop&q=80&w=150&h=150',
+    spriteBase: 'drklecker',
+    dialogue: [
+      "Did you just now get here?",
+      "Are you gonna do any work today?",
+      "I don't think you know what you're talking about",
+      "I thought you loved Trump."
+    ]
+  },
+  { 
     id: 'dr_robbins', 
     name: 'Dr. Robbins', 
     role: 'Optometrist', 

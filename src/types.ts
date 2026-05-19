@@ -1,4 +1,3 @@
-
 export enum GameState {
   MENU,
   CHARACTER_SELECTION,
@@ -11,7 +10,8 @@ export enum GameState {
   YOUTUBE,
   EYE_EXAM,
   AUTOREFRACTOR,
-  EDGER
+  EDGER,
+  COBURN_GENERATOR,
 }
 
 export interface Patient {
@@ -24,7 +24,12 @@ export interface Patient {
     cylinder: number;
     axis: number;
   };
-  status: 'WAITING' | 'BEING_HELPED' | 'WAITING_FOR_LAB' | 'READY_FOR_PICKUP' | 'COMPLETED';
+  status:
+    | "WAITING"
+    | "BEING_HELPED"
+    | "WAITING_FOR_LAB"
+    | "READY_FOR_PICKUP"
+    | "COMPLETED";
   wantsVerification?: boolean;
   spriteBase?: string;
   spriteUrl?: string;
@@ -33,7 +38,7 @@ export interface Patient {
 export interface InventoryItem {
   id: string;
   name: string;
-  type: 'file' | 'frame' | 'glasses';
+  type: "file" | "frame" | "glasses";
 }
 
 export interface NPC {
@@ -50,7 +55,15 @@ export interface NPC {
   targetX?: number;
   targetY?: number;
   isMoving?: boolean;
-  direction?: 'north' | 'south' | 'east' | 'west' | 'north-east' | 'north-west' | 'south-east' | 'south-west';
+  direction?:
+    | "north"
+    | "south"
+    | "east"
+    | "west"
+    | "north-east"
+    | "north-west"
+    | "south-east"
+    | "south-west";
 }
 
 export interface Position {

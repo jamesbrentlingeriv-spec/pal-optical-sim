@@ -8,24 +8,26 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { GameState } from './types';
-import MainMenu from './components/UI/MainMenu';
-import CharacterSelection from './components/UI/CharacterSelection';
-import GameWorld from './components/GameWorld';
-import Lensometer from './components/UI/Lensometer';
-import Computer from './components/UI/Computer';
-import Options from './components/UI/Options';
-import Phone from './components/UI/Phone';
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { GameState } from "./types";
+import MainMenu from "./components/UI/MainMenu";
+import CharacterSelection from "./components/UI/CharacterSelection";
+import GameWorld from "./components/GameWorld";
+import Lensometer from "./components/UI/Lensometer";
+import Computer from "./components/UI/Computer";
+import Options from "./components/UI/Options";
+import Phone from "./components/UI/Phone";
 
 export default function App() {
   const [gameState, setGameState] = useState<GameState>(GameState.MENU);
   const [showSplash, setShowSplash] = useState(true);
-  const [selectedCharacterId, setSelectedCharacterId] = useState<string | null>(null);
+  const [selectedCharacterId, setSelectedCharacterId] = useState<string | null>(
+    null,
+  );
   const [audioSettings, setAudioSettings] = useState({
     volume: 0.5,
-    muted: false
+    muted: false,
   });
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const phoneRingRef = useRef<HTMLAudioElement | null>(null);
@@ -36,33 +38,33 @@ export default function App() {
       const timer = setTimeout(() => {
         setShowSplash(false);
       }, 5000);
-      
+
       const handleVideoEnd = () => {
         setShowSplash(false);
       };
-      
+
       if (splashVideoRef.current) {
-        splashVideoRef.current.addEventListener('ended', handleVideoEnd);
+        splashVideoRef.current.addEventListener("ended", handleVideoEnd);
       }
-      
+
       return () => {
         clearTimeout(timer);
         if (splashVideoRef.current) {
-          splashVideoRef.current.removeEventListener('ended', handleVideoEnd);
+          splashVideoRef.current.removeEventListener("ended", handleVideoEnd);
         }
       };
     }
   }, [showSplash]);
 
-   useEffect(() => {
+  useEffect(() => {
     const playAudio = () => {
       if (audioRef.current && !audioSettings.muted && audioRef.current.paused) {
-        audioRef.current.play().catch(err => {});
+        audioRef.current.play().catch((err) => {});
       }
     };
 
-    window.addEventListener('click', playAudio);
-    window.addEventListener('keydown', playAudio);
+    window.addEventListener("click", playAudio);
+    window.addEventListener("keydown", playAudio);
 
     if (audioRef.current) {
       audioRef.current.volume = audioSettings.volume;
@@ -74,8 +76,8 @@ export default function App() {
     }
 
     return () => {
-      window.removeEventListener('click', playAudio);
-      window.removeEventListener('keydown', playAudio);
+      window.removeEventListener("click", playAudio);
+      window.removeEventListener("keydown", playAudio);
     };
   }, [audioSettings.muted, audioSettings.volume]);
 
@@ -98,18 +100,9 @@ export default function App() {
 
   return (
     <div className="w-full h-screen bg-slate-900 text-white overflow-hidden font-sans text-xs">
-      <audio 
-        ref={audioRef} 
-        src="/Cart Crystal.mp3" 
-        loop 
-        autoPlay
-      />
-      <audio 
-        ref={phoneRingRef} 
-        src="/phonering.mp3" 
-        loop
-      />
-      
+      <audio ref={audioRef} src="/Cart Crystal.mp3" loop autoPlay />
+      <audio ref={phoneRingRef} src="/phonering.mp3" loop />
+
       <AnimatePresence mode="wait">
         {showSplash && (
           <motion.div
@@ -128,17 +121,17 @@ export default function App() {
             />
           </motion.div>
         )}
-        
+
         {!showSplash && gameState === GameState.MENU && (
-          <MainMenu 
+          <MainMenu
             key="menu"
-            onStart={handleStartGame} 
-            onOptions={handleOpenOptions} 
+            onStart={handleStartGame}
+            onOptions={handleOpenOptions}
           />
         )}
 
         {!showSplash && gameState === GameState.CHARACTER_SELECTION && (
-          <CharacterSelection 
+          <CharacterSelection
             key="selection"
             onSelect={handleCharacterSelect}
             onBack={handleBackToMenu}
@@ -146,7 +139,7 @@ export default function App() {
         )}
 
         {!showSplash && gameState === GameState.OPTIONS && (
-          <Options 
+          <Options
             key="options"
             settings={audioSettings}
             onUpdate={setAudioSettings}
@@ -154,25 +147,27 @@ export default function App() {
           />
         )}
 
-        {!showSplash && (gameState === GameState.PLAYING ||
-           gameState === GameState.LENSOMETER ||
-           gameState === GameState.COMPUTER ||
-           gameState === GameState.PHONE ||
-           gameState === GameState.EYE_EXAM ||
+        {!showSplash &&
+          (gameState === GameState.PLAYING ||
+            gameState === GameState.LENSOMETER ||
+            gameState === GameState.COMPUTER ||
+            gameState === GameState.PHONE ||
+            gameState === GameState.EYE_EXAM ||
             gameState === GameState.AUTOREFRACTOR ||
             gameState === GameState.EDGER ||
-            gameState === GameState.YOUTUBE) && (
-          <GameWorld 
-            key="world"
-            gameState={gameState}
-            setGameState={setGameState}
-            audioSettings={audioSettings}
-            onUpdateAudio={setAudioSettings}
-            playerCharacterId={selectedCharacterId}
-            bgMusicRef={audioRef}
-            phoneRingRef={phoneRingRef}
-          />
-        )}
+            gameState === GameState.YOUTUBE ||
+            gameState === GameState.COBURN_GENERATOR) && (
+            <GameWorld
+              key="world"
+              gameState={gameState}
+              setGameState={setGameState}
+              audioSettings={audioSettings}
+              onUpdateAudio={setAudioSettings}
+              playerCharacterId={selectedCharacterId}
+              bgMusicRef={audioRef}
+              phoneRingRef={phoneRingRef}
+            />
+          )}
       </AnimatePresence>
     </div>
   );
