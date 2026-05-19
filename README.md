@@ -7,7 +7,7 @@
   <img src="https://img.shields.io/badge/Vite-6-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite 6" />
   <img src="https://img.shields.io/badge/Motion-12-0055FF?style=for-the-badge&logo=framer&logoColor=white" alt="Motion 12" />
 
-  <br/><br/>
+<br/><br/>
 
   <h3>A top-down pixel art optical store simulation game 🕹️👓</h3>
   <p>Manage patients, verify prescriptions, fit frames, and run the daily operations of a bustling optometry practice — all from a retro 2D isometric perspective.</p>
@@ -38,18 +38,24 @@
 
 ## 🎮 About the Game
 
-**PAL Optical Sim** puts you in the shoes of **James**, an optician working at a busy optical shop. Navigate a fully realized 2D pixel-art store, interact with staff and patients, use specialized optical equipment, and manage the complete patient workflow — from check-in to final frame fitting.
+**PAL Optical Sim** puts you in the shoes of **James**, an optician working at a
+busy optical shop. Navigate a fully realized 2D pixel-art store, interact with
+staff and patients, use specialized optical equipment, and manage the complete
+patient workflow — from check-in to final frame fitting.
 
 The game simulates the daily life of an optical practice with:
 
 - 🏢 A **three-zone shop floor** (Examination Wing, Retail Showroom, Laboratory)
 - 👥 **11 unique NPCs**, each with their own role and personality
-- 👤 **Procedurally generated patients** with randomized names, insurance plans, and prescriptions
+- 👤 **Procedurally generated patients** with randomized names, insurance plans,
+  and prescriptions
 - 🔬 **Functional optical equipment** (lensometer, phoropter, Snellen chart)
-- 🎯 **4 playable mini-games** (eye exam, lens verification, frame cleaning, frame fitting)
+- 🎯 **4 playable mini-games** (eye exam, lens verification, frame cleaning,
+  frame fitting)
 - ⚡ **Dynamic ambient events** including the famous "SAGE!!!" moment
 - 📱 **Full mobile support** with touch controls
-- 🎨 **Immersive pixel-art aesthetic** with CRT scanlines, wood-grain textures, and retro borders
+- 🎨 **Immersive pixel-art aesthetic** with CRT scanlines, wood-grain textures,
+  and retro borders
 
 ---
 
@@ -57,13 +63,13 @@ The game simulates the daily life of an optical practice with:
 
 ### Controls
 
-| Action | Desktop | Mobile |
-|--------|---------|--------|
-| Move Up | `W` / `↑` | D-Pad Up |
-| Move Down | `S` / `↓` | D-Pad Down |
-| Move Left | `A` / `←` | D-Pad Left |
-| Move Right | `D` / `→` | D-Pad Right |
-| Interact | `E` | Touch Hand Button |
+| Action     | Desktop   | Mobile            |
+| ---------- | --------- | ----------------- |
+| Move Up    | `W` / `↑` | D-Pad Up          |
+| Move Down  | `S` / `↓` | D-Pad Down        |
+| Move Left  | `A` / `←` | D-Pad Left        |
+| Move Right | `D` / `→` | D-Pad Right       |
+| Interact   | `E`       | Touch Hand Button |
 
 ### Player Flow
 
@@ -71,37 +77,43 @@ The game simulates the daily life of an optical practice with:
 2. **Character Selection** → Choose your optician character
 3. **Free Roam** → Walk around the shop using WASD/Arrow keys
 4. **Interact** → Press `E` when near objects, patients, or NPCs
-5. **Complete Workflow** → Greet patients → verify prescriptions → send to lab → fit frames → complete sale
-6. **Patients leave** when their job is done, and new patients arrive automatically
+5. **Complete Workflow** → Greet patients → verify prescriptions → send to lab →
+   fit frames → complete sale
+6. **Patients leave** when their job is done, and new patients arrive
+   automatically
 
 ---
 
 ## 👥 Characters
 
-The shop is staffed with 11 unique characters, each with distinct behaviors, dialogue, and roles:
+The shop is staffed with 11 unique characters, each with distinct behaviors,
+dialogue, and roles:
 
-| Name | Role | Behavior |
-|------|------|----------|
-| **James** 🎮 | **Optician (You!)** | Player-controlled character |
-| **Dr. Robbins** 🩺 | Optometrist | Performs eye exams in the Examination Wing |
-| **Tracy** 📁 | File Clerk | Periodically shouts *"James, find your files."* every 20s |
-| **Sabrina** 💰 | Insurance Clerk | Processes insurance paperwork |
-| **April** 🖥️ | Receptionist | Stationary at the front desk; answers when the phone rings |
-| **Robby** 🔧 | Lab Manager | Runs the lab; requests frames from the front desk to complete jobs |
-| **Carribyan** 👓 | Optician | Random dialogue like *"Who dispensed this?"* |
-| **Linda** 🏢 | Office Manager | Barks orders: *"Get that desk cleaned off"*, *"Go get the mail"*, *"Somebody clean these mirrors"* |
-| **Lisa** 📋 | Optometric Technician | Calls out patient names loudly |
-| **Nairobi** 👁️ | Optician | Works the shop floor |
-| **Sara** 👶 | Tracy's Daughter | Appears during the special "SAGE!!!" event |
-| **Patients** 🚶 | Customers | Procedurally generated; walk around, wait, get helped, and leave |
+| Name               | Role                  | Behavior                                                                                           |
+| ------------------ | --------------------- | -------------------------------------------------------------------------------------------------- |
+| **James** 🎮       | **Optician (You!)**   | Player-controlled character                                                                        |
+| **Dr. Robbins** 🩺 | Optometrist           | Performs eye exams in the Examination Wing                                                         |
+| **Tracy** 📁       | File Clerk            | Periodically shouts _"James, find your files."_ every 20s                                          |
+| **Sabrina** 💰     | Insurance Clerk       | Processes insurance paperwork                                                                      |
+| **April** 🖥️       | Receptionist          | Stationary at the front desk; answers when the phone rings                                         |
+| **Robby** 🔧       | Lab Manager           | Runs the lab; requests frames from the front desk to complete jobs                                 |
+| **Carribyan** 👓   | Optician              | Random dialogue like _"Who dispensed this?"_                                                       |
+| **Linda** 🏢       | Office Manager        | Barks orders: _"Get that desk cleaned off"_, _"Go get the mail"_, _"Somebody clean these mirrors"_ |
+| **Lisa** 📋        | Optometric Technician | Calls out patient names loudly                                                                     |
+| **Nairobi** 👁️     | Optician              | Works the shop floor                                                                               |
+| **Sara** 👶        | Tracy's Daughter      | Appears during the special "SAGE!!!" event                                                         |
+| **Patients** 🚶    | Customers             | Procedurally generated; walk around, wait, get helped, and leave                                   |
 
-All NPCs roam randomly within their designated zones, occasionally change direction, and respond to special events (like the Sage arrival) by crowding around.
+All NPCs roam randomly within their designated zones, occasionally change
+direction, and respond to special events (like the Sage arrival) by crowding
+around.
 
 ---
 
 ## 👤 Patient System
 
-Patients spawn automatically (up to 2 at a time) and follow a complete lifecycle:
+Patients spawn automatically (up to 2 at a time) and follow a complete
+lifecycle:
 
 ### Patient Lifecycle
 
@@ -116,8 +128,10 @@ WAITING ──[Press E]──→ BEING_HELPED ──[15s lab delay]──→ REA
 
 - **Name**: Randomly generated from 20+ first names × 5 last names
 - **Insurance**: VSP, EyeMed, Blue Shield, or Aetna
-- **Prescription**: Randomized sphere (-2.00 to +2.00), cylinder (-1.00 to +1.00), axis (0–180°)
-- **Verification Request**: ~30% chance a patient will ask you to verify their prescription on the lensometer
+- **Prescription**: Randomized sphere (-2.00 to +2.00), cylinder (-1.00 to
+  +1.00), axis (0–180°)
+- **Verification Request**: ~30% chance a patient will ask you to verify their
+  prescription on the lensometer
 - **Avatar**: Randomly assigned male or female sprite with unique appearance
 
 ### Patient Workflow (Step-by-Step)
@@ -126,7 +140,8 @@ WAITING ──[Press E]──→ BEING_HELPED ──[15s lab delay]──→ REA
 2. Walk up to a waiting patient and press `E` to write them up
 3. A job ticket is added to your inventory
 4. Take the job to **Robby** in the lab (press `E`)
-5. Robby asks for a frame → go to **Tracy** at the front desk (press `E`) to collect it
+5. Robby asks for a frame → go to **Tracy** at the front desk (press `E`) to
+   collect it
 6. Return the frame to **Robby** to complete the lab step
 7. After 15 seconds, the patient becomes ready for pickup
 8. Interact with the patient to launch the **frame fitting** mini-game
@@ -143,12 +158,16 @@ Verify a patient's prescription by operating a digital lensometer.
 **Objective**: Align the mires (crosshairs) and match the prescribed power.
 
 **Controls**:
+
 - **Power Wheel**: Adjust sphere power from -4.00D to +4.00D (0.25D increments)
 - **Axis Wheel**: Drag left/right to rotate the axis alignment (0–360°)
-- **Status**: Green "READY" indicator when both rotation (±3°) and power (±0.12D) are matched
+- **Status**: Green "READY" indicator when both rotation (±3°) and power
+  (±0.12D) are matched
 
 **Visual Feedback**:
-- The eyepiece view shows green mires with a **dynamic blur effect** that sharpens as you approach the correct power
+
+- The eyepiece view shows green mires with a **dynamic blur effect** that
+  sharpens as you approach the correct power
 - CRT scanline overlay and radial gradient for authentic retro machine feel
 - Target mires rotate independently from the player's prism control
 
@@ -158,19 +177,21 @@ Verify a patient's prescription by operating a digital lensometer.
 
 Dr. Robbins walks you through a 5-round A/B comparison refraction test.
 
-**Objective**: Choose which of two lenses makes the Snellen chart letters appear clearer.
+**Objective**: Choose which of two lenses makes the Snellen chart letters appear
+clearer.
 
 **Rounds**:
 
-| Round | Lens 1 Blur | Lens 2 Blur | Difference |
-|-------|-------------|-------------|------------|
-| 1     | Very blurry (10px) | Blurry (6px) | Easy |
-| 2     | Blurry (7px) | Somewhat blurry (4px) | Moderate |
-| 3     | Somewhat blurry (5px) | Slightly blurry (2.5px) | Medium |
-| 4     | Slightly blurry (3px) | Barely blurry (1px) | Hard |
-| 5     | Barely blurry (1.5px) | Clear (0px) | Final |
+| Round | Lens 1 Blur           | Lens 2 Blur             | Difference |
+| ----- | --------------------- | ----------------------- | ---------- |
+| 1     | Very blurry (10px)    | Blurry (6px)            | Easy       |
+| 2     | Blurry (7px)          | Somewhat blurry (4px)   | Moderate   |
+| 3     | Somewhat blurry (5px) | Slightly blurry (2.5px) | Medium     |
+| 4     | Slightly blurry (3px) | Barely blurry (1px)     | Hard       |
+| 5     | Barely blurry (1.5px) | Clear (0px)             | Final      |
 
 **Features**:
+
 - Live Snellen chart letters (E, F P, T O Z, L P E D, etc.)
 - Animated blur transitions between selections
 - Progress indicator (5 dots showing rounds completed)
@@ -185,20 +206,23 @@ Triggered by interacting with display cases or wall displays.
 
 **Objective**: Clean the frames on display until they shine.
 
-**Feedback**: James says *"Look at that shine!"* on completion.
+**Feedback**: James says _"Look at that shine!"_ on completion.
 
 ---
 
 ### 4. Frame Fitting (Adjustments)
 
-When helping a patient pick up their finished glasses, you must adjust the frame to match target measurements.
+When helping a patient pick up their finished glasses, you must adjust the frame
+to match target measurements.
 
 **Parameters**:
+
 - **Frame Width** (0–100)
 - **Bridge Width** (0–100)
 - **Temple Length** (0–100)
 
-**Objective**: Match all three measurements to the patient's target values. Patient says *"Another happy customer!"* on completion.
+**Objective**: Match all three measurements to the patient's target values.
+Patient says _"Another happy customer!"_ on completion.
 
 ---
 
@@ -240,11 +264,11 @@ The store spans **2400×800 pixels** divided into three distinct zones:
 
 ### Zone Details
 
-| Zone | X Range | Floor | Key Features |
-|------|---------|-------|-------------|
-| **Examination Wing** | 0–600 | Dark wood-grain | Exam chairs, Dr. Robbins' desk, phoropter, eye chart |
-| **Retail Showroom** | 600–1800 | Wood-grain | Front desk, reception computers, brand walls, display cases, dispensing tables |
-| **Laboratory** | 1800–2400 | White tile | Lensometer, job shelves, 7e machine, lab sink, tool rack, safety sign |
+| Zone                 | X Range   | Floor           | Key Features                                                                   |
+| -------------------- | --------- | --------------- | ------------------------------------------------------------------------------ |
+| **Examination Wing** | 0–600     | Dark wood-grain | Exam chairs, Dr. Robbins' desk, phoropter, eye chart                           |
+| **Retail Showroom**  | 600–1800  | Wood-grain      | Front desk, reception computers, brand walls, display cases, dispensing tables |
+| **Laboratory**       | 1800–2400 | White tile      | Lensometer, job shelves, 7e machine, lab sink, tool rack, safety sign          |
 
 ### Partition Walls
 
@@ -257,39 +281,40 @@ The store spans **2400×800 pixels** divided into three distinct zones:
 
 ## 🪑 Interactive Objects
 
-| Object | Type | Interaction |
-|--------|------|-------------|
-| **Phone** 📞 | `phone` | Answer ringing calls (phone rings every ~30s) |
-| **Computer** 💻 | `computer` | Access sales/patient management system |
-| **Reception Computer** 🖥️ | `reception_computer` | Watch YouTube (Tracy's break time) |
-| **Lensometer** 🔬 | `lensometer` | Launch lens verification mini-game |
-| **Phoropter** 🌀 | `wall_item` | Start eye exam |
-| **Eye Chart** 📊 | `wall_item` | Start eye exam |
-| **Display Cases** 🪟 | `display_case` | Clean frames mini-game |
-| **Brand Displays** 🏷️ | `display` | View brand catalog + clean frames |
-| **Exam Chairs** 💺 | `exam_chair` | Exam room seating |
-| **HP Printer** 🖨️ | `hpprinter` | Lab printer |
-| **7e Machine** ⚙️ | `7e_machine` | Lab edging machine |
-| **Job Shelves** 📦 | `shelf` | Lab job storage |
-| **Lab Sink** 🚰 | `cabinet` | Utility sink |
-| **Safety Sign** ⚠️ | `wall_item` | Lab safety signage |
-| **Front Desk Counter** 🪑 | `counter` | Patient check-in area |
+| Object                    | Type                 | Interaction                                   |
+| ------------------------- | -------------------- | --------------------------------------------- |
+| **Phone** 📞              | `phone`              | Answer ringing calls (phone rings every ~30s) |
+| **Computer** 💻           | `computer`           | Access sales/patient management system        |
+| **Reception Computer** 🖥️ | `reception_computer` | Watch YouTube (Tracy's break time)            |
+| **Lensometer** 🔬         | `lensometer`         | Launch lens verification mini-game            |
+| **Phoropter** 🌀          | `wall_item`          | Start eye exam                                |
+| **Eye Chart** 📊          | `wall_item`          | Start eye exam                                |
+| **Display Cases** 🪟      | `display_case`       | Clean frames mini-game                        |
+| **Brand Displays** 🏷️     | `display`            | View brand catalog + clean frames             |
+| **Exam Chairs** 💺        | `exam_chair`         | Exam room seating                             |
+| **HP Printer** 🖨️         | `hpprinter`          | Lab printer                                   |
+| **7e Machine** ⚙️         | `7e_machine`         | Lab edging machine                            |
+| **Job Shelves** 📦        | `shelf`              | Lab job storage                               |
+| **Lab Sink** 🚰           | `cabinet`            | Utility sink                                  |
+| **Safety Sign** ⚠️        | `wall_item`          | Lab safety signage                            |
+| **Front Desk Counter** 🪑 | `counter`            | Patient check-in area                         |
 
 ### Brand Displays
 
 9 frame brands are featured in the shop, each with their own wall display area:
 
-| Brand | Location |
-|-------|----------|
-| **Ray-Ban** | Right wall (top) |
-| **Bebe** | Right wall |
-| **Coach** | Right wall |
-| **Versace** | Right wall (bottom) |
-| **Michael Kors** | Left wall |
-| **Enhance** | Left wall (bottom) |
-| **Medicate** | Back wall (large banner) |
+| Brand            | Location                 |
+| ---------------- | ------------------------ |
+| **Ray-Ban**      | Right wall (top)         |
+| **Bebe**         | Right wall               |
+| **Coach**        | Right wall               |
+| **Versace**      | Right wall (bottom)      |
+| **Michael Kors** | Left wall                |
+| **Enhance**      | Left wall (bottom)       |
+| **Medicate**     | Back wall (large banner) |
 
-When walking near a brand display, a **side panel** slides in showing product images and an "EXPLORE" overlay.
+When walking near a brand display, a **side panel** slides in showing product
+images and an "EXPLORE" overlay.
 
 ---
 
@@ -299,34 +324,40 @@ When walking near a brand display, a **side panel** slides in showing product im
 
 Every **3 minutes**, this signature event triggers:
 
-1. **Sara** (Tracy's daughter) enters from the bottom of the screen carrying her baby **Sage**
+1. **Sara** (Tracy's daughter) enters from the bottom of the screen carrying her
+   baby **Sage**
 2. **ALL NPCs** stop what they're doing and **crowd around** her in a circle
 3. Everyone shouts **"SAGE!!!"** in unison (phase 1, ~5 seconds)
 4. Everyone says **"What a cute baby!"** (phase 2, ~8 seconds)
-5. After 25 seconds total, Sara walks out and NPCs return to their original positions
+5. After 25 seconds total, Sara walks out and NPCs return to their original
+   positions
 6. Speech bubbles appear above each character during the event
 
 ### Periodic NPC Dialogue
 
-| NPC | Frequency | Messages |
-|-----|-----------|----------|
-| **Tracy** | Every 20s | *"James, find your files."* |
-| **Lisa** | Every 30s | Shouts a random patient's name: *"ROBERT!"* |
-| **Linda** | Every 30s | *"Get that desk cleaned off"*, *"Go get the mail"*, *"Somebody clean these mirrors"* |
-| **Carribyan** | Every 30s | *"Who dispensed this?"*, *"What's everybody having for dinner?"* |
-| **April** | On phone ring | Receptionist alert |
+| NPC           | Frequency     | Messages                                                                             |
+| ------------- | ------------- | ------------------------------------------------------------------------------------ |
+| **Tracy**     | Every 20s     | _"James, find your files."_                                                          |
+| **Lisa**      | Every 30s     | Shouts a random patient's name: _"ROBERT!"_                                          |
+| **Linda**     | Every 30s     | _"Get that desk cleaned off"_, _"Go get the mail"_, _"Somebody clean these mirrors"_ |
+| **Carribyan** | Every 30s     | _"Who dispensed this?"_, _"What's everybody having for dinner?"_                     |
+| **April**     | On phone ring | Receptionist alert                                                                   |
 
 ### Robby's Frame Workflow
 
 A scripted interaction chain between you, Robby, and Tracy:
 
-1. Talk to **Robby** with a job in inventory → *"I need the frame from the front desk"*
-2. Talk to **Tracy** → *"Here is the frame Robby was asking for"*
-3. Return to **Robby** → *"Perfect! Long hair don't care, lab is running smooth!"*
+1. Talk to **Robby** with a job in inventory → _"I need the frame from the front
+   desk"_
+2. Talk to **Tracy** → _"Here is the frame Robby was asking for"_
+3. Return to **Robby** → _"Perfect! Long hair don't care, lab is running
+   smooth!"_
 
 ### Phone Ringing
 
-The shop phone rings every **30 seconds**. An animated alert appears in the HUD, April's speech bubble shows, and you can press `E` near the phone to answer (launches the phone scenario screen).
+The shop phone rings every **30 seconds**. An animated alert appears in the HUD,
+April's speech bubble shows, and you can press `E` near the phone to answer
+(launches the phone scenario screen).
 
 ---
 
@@ -366,17 +397,19 @@ When you walk near an interactable object or person, a prompt appears above it:
 ### Dialogue System
 
 Anime-style dialogue boxes appear at the bottom of the screen with:
+
 - Speaker name in blue
 - Message in large italic white text
-- *"Click anywhere to continue"* prompt
+- _"Click anywhere to continue"_ prompt
 - Pulsing animation on entry/exit
 
 ### Brand Info Panel
 
 Slides in from the right when near a brand display, showing:
+
 - Brand name header
 - Product photos with hover overlay
-- *"Data_Missing"* fallback for brands without assets
+- _"Data_Missing"_ fallback for brands without assets
 
 ---
 
@@ -386,14 +419,14 @@ The game features a cohesive retro pixel-art aesthetic:
 
 ### CSS Utilities
 
-| Class | Effect |
-|-------|--------|
-| `.pixelated` | `image-rendering: pixelated` for crisp pixel art |
-| `.pixel-border` | Multi-layered box-shadow creating retro pixel borders |
-| `.pixel-border-blue` | Same but with blue accent color |
-| `.wall-texture` | Subtle SVG tiled pattern overlay |
-| `.wood-grain` | Brown base with dark checkerboard SVG pattern |
-| `.animate-ring` | 2-step scale animation for phone ringing |
+| Class                | Effect                                                |
+| -------------------- | ----------------------------------------------------- |
+| `.pixelated`         | `image-rendering: pixelated` for crisp pixel art      |
+| `.pixel-border`      | Multi-layered box-shadow creating retro pixel borders |
+| `.pixel-border-blue` | Same but with blue accent color                       |
+| `.wall-texture`      | Subtle SVG tiled pattern overlay                      |
+| `.wood-grain`        | Brown base with dark checkerboard SVG pattern         |
+| `.animate-ring`      | 2-step scale animation for phone ringing              |
 
 ### Flooring
 
@@ -411,7 +444,8 @@ The game features a cohesive retro pixel-art aesthetic:
 
 - **Press Start 2P** pixel font (from Google Fonts) used throughout
 - Retro uppercase styling with tracking-widest for labels
-- Terminal-style headers like `CLINIC_LOG`, `EXAMINATION WING - DR. ROBBINS`, `LABORATORY SECTOR A`
+- Terminal-style headers like `CLINIC_LOG`, `EXAMINATION WING - DR. ROBBINS`,
+  `LABORATORY SECTOR A`
 
 ---
 
@@ -420,7 +454,8 @@ The game features a cohesive retro pixel-art aesthetic:
 The game is fully responsive with dedicated mobile controls:
 
 - **Touch D-Pad** bottom-left corner with Up/Down/Left/Right buttons
-- **Interact Button** bottom-right corner (blue circle with hand icon + [E] label)
+- **Interact Button** bottom-right corner (blue circle with hand icon + [E]
+  label)
 - **Responsive Scaling** — camera and game world auto-scale to fit screen width
 - **HUD Scaling** — HUD elements scale down on smaller screens
 - **All objects and NPCs** have touch-friendly hit detection
@@ -429,8 +464,9 @@ The game is fully responsive with dedicated mobile controls:
 
 ## 🔊 Audio
 
-- **Background Music**: Loops *"Save Point Smile.mp3"*
-- **Auto-play**: Attempts autoplay on page load with click/keyboard interaction fallback
+- **Background Music**: Loops _"Save Point Smile.mp3"_
+- **Auto-play**: Attempts autoplay on page load with click/keyboard interaction
+  fallback
 - **Mute Toggle**: HUD button to mute/unmute
 - **Volume Control**: Adjustable via the options menu (0–100%)
 
@@ -438,15 +474,15 @@ The game is fully responsive with dedicated mobile controls:
 
 ## 🛠️ Tech Stack
 
-| Technology | Purpose |
-|-----------|---------|
-| **[React 19](https://react.dev/)** | UI framework (concurrent features) |
-| **[TypeScript 5.8](https://www.typescriptlang.org/)** | Type safety and developer experience |
-| **[Tailwind CSS 4](https://tailwindcss.com/)** | Utility-first CSS with `@theme` custom properties |
-| **[Vite 6](https://vitejs.dev/)** | Fast development server and bundler |
-| **[Motion 12](https://motion.dev/)** | Animation library (Framer Motion successor) |
-| **[Lucide React](https://lucide.dev/)** | Icon library |
-| **[Express](https://expressjs.com/)** | Backend server (deployment) |
+| Technology                                            | Purpose                                           |
+| ----------------------------------------------------- | ------------------------------------------------- |
+| **[React 19](https://react.dev/)**                    | UI framework (concurrent features)                |
+| **[TypeScript 5.8](https://www.typescriptlang.org/)** | Type safety and developer experience              |
+| **[Tailwind CSS 4](https://tailwindcss.com/)**        | Utility-first CSS with `@theme` custom properties |
+| **[Vite 6](https://vitejs.dev/)**                     | Fast development server and bundler               |
+| **[Motion 12](https://motion.dev/)**                  | Animation library (Framer Motion successor)       |
+| **[Lucide React](https://lucide.dev/)**               | Icon library                                      |
+| **[Express](https://expressjs.com/)**                 | Backend server (deployment)                       |
 
 ---
 
@@ -529,7 +565,8 @@ npm run preview
 npm run lint
 ```
 
-Runs `tsc --noEmit` to check for TypeScript errors without producing output files.
+Runs `tsc --noEmit` to check for TypeScript errors without producing output
+files.
 
 ---
 
