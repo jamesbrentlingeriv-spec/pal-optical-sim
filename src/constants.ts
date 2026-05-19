@@ -449,14 +449,14 @@ export const SHOP_OBJECTS = [
     width: 100,
     height: 100,
   },
-  { id: "finer", type: "finer", x: 2250, y: 320, width: 80, height: 80 },
   {
-    id: "cylinder_polishing_machine",
-    type: "cylinder_polisher",
-    x: 2100,
-    y: 420,
-    width: 120,
-    height: 100,
+    // Merged: finer now includes cylinder polishing functionality at finer.png coordinates
+    id: "finer",
+    type: "finer_cylinder_combo",
+    x: 2250,
+    y: 320,
+    width: 80,
+    height: 80,
   },
 
   // Dispensing Tables (Bottom Area)
@@ -476,4 +476,19 @@ export const SHOP_OBJECTS = [
     width: 120,
     height: 80,
   },
+];
+
+// Incomplete task definitions for the clinic log feature
+export interface TaskDefinition {
+  id: string;
+  label: string;
+  stateKey: string;
+}
+
+export const INCOMPLETE_TASKS: TaskDefinition[] = [
+  { id: "check_inventory", label: "Check Frame Inventory", stateKey: "check_inventory" },
+  { id: "greet_patients", label: "Greet Waiting Patients", stateKey: "greet_patients" },
+  { id: "clean_display", label: "Clean Display Cases", stateKey: "clean_display" },
+  { id: "process_lab_job", label: "Process Lab Jobs", stateKey: "process_lab_job" },
+  { id: "answer_phone", label: "Answer Phone Calls", stateKey: "answer_phone" },
 ];

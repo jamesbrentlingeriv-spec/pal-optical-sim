@@ -32,6 +32,7 @@ import { AutorefractorGame } from "./UI/AutorefractorGame";
 import { EdgerGame } from "./UI/EdgerGame";
 import { Coburn2GGenerator } from "./UI/Coburn2GGenerator";
 import { CylinderPolishingGame } from "./UI/CylinderPolishingGame";
+import { ClinicLogOverlay } from "./UI/ClinicLogOverlay";
 import { useWindowSize } from "../hooks/useWindowSize";
 
 interface GameWorldProps {
@@ -757,7 +758,7 @@ export default function GameWorld({
         if (obj.type === "coburn_generator") {
           setGameState(GameState.COBURN_GENERATOR);
         }
-        if (obj.type === "cylinder_polisher") {
+        if (obj.type === "cylinder_polisher" || obj.type === "finer_cylinder_combo") {
           setGameState(GameState.CYLINDER_POLISHING);
         }
         if (obj.type === "display_case" || obj.type === "display") {
@@ -882,11 +883,18 @@ export default function GameWorld({
 
   useEffect(() => {
     const h = (e: KeyboardEvent) => {
-      if (e.key.toLowerCase() === "e") checkInteraction();
+      if (e.key.toLowerCase() === "e" && !clinicLogOpen) checkInteraction();
+      if (e.key === "Escape" && clinicLogOpen) {
+        setClinicLogOpen(false);
+      }
     };
     window.addEventListener("keypress", h);
-    return () => window.removeEventListener("keypress", h);
-  }, [playerPos, isPhoneRinging]);
+    window.addEventListener("keydown", h);
+    return () => {
+      window.removeEventListener("keypress", h);
+      window.removeEventListener("keydown", h);
+    };
+  }, [playerPos, isPhoneRinging, clinicLogOpen]);
 
   // Simulate ringing phone every 2 minutes
   useEffect(() => {
@@ -1102,6 +1110,8 @@ export default function GameWorld({
   }, [patients]);
 
   const { width, height } = useWindowSize();
+  const safeWidth = width > 0 ? width : window.innerWidth;
+  const safeHeight = height > 0 ? height : window.innerHeight;
   const isMobile = width < 768;
   const gameScale = isMobile ? width / 500 : 1;
   const effectiveScale = Math.min(1.2, Math.max(0.4, gameScale));
@@ -1156,7 +1166,10 @@ export default function GameWorld({
             )}
           </button>
         </div>
-        <div className="bg-black/80 border border-white/40 p-2 w-32 space-y-1 shadow-lg backdrop-blur-sm">
+        <button
+          onClick={() => setClinicLogOpen(true)}
+          className="bg-black/80 border border-white/40 p-2 w-32 space-y-1 shadow-lg backdrop-blur-sm hover:bg-black/90 transition-colors cursor-pointer text-left"
+        >
           <div className="flex items-center justify-between mb-0.5 border-b border-white/10 pb-1">
             <div className="text-[5px] font-black text-slate-400 uppercase tracking-widest">
               CLINIC_LOG
@@ -1176,7 +1189,7 @@ export default function GameWorld({
               </div>
             </div>
           </div>
-        </div>
+        </button>
       </div>
       <div
         className="relative transition-all duration-300 origin-top-left"
@@ -1483,34 +1496,20 @@ export default function GameWorld({
                 style={{ transform: "scaleX(-1)" }}
               />
             )}
-            {obj.type === "finer" && (
-              <img
-                src="/objects/finer.png"
-                className="absolute inset-0 w-full h-full object-contain pixelated"
-                alt="finer"
-              />
-            )}
-            {obj.type === "cylinder_polisher" && (
-              <div className="w-full h-full flex flex-col items-center justify-center bg-blue-900 rounded-sm border-2 border-blue-400">
-                <div className="text-[6px] text-blue-200 font-black mb-1">CYLINDER</div>
-                <div className="text-[4px] text-blue-300">POLISHER</div>
-                <div className="flex gap-1 mt-1">
-                  {[...Array(4)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="w-3 h-3 rounded-full bg-blue-300 border border-blue-200"
-                      style={{
-                        animation: i % 2 === 0
-                          ? "pulse-spindle 0.8s ease-in-out infinite"
-                          : "pulse-spindle 0.8s ease-in-out 0.4s infinite",
-                      }}
-                    />
-                  ))}
+            {obj.type === "finer_cylinder_combo" && (
+              <div className="w-full h-full relative">
+                <img
+                  src="/objects/finer.png"
+                  className="absolute inset-0 w-full h-full object-contain pixelated"
+                  alt="finer"
+                />
+                <div className="absolute -top-2 -right-2 bg-blue-600 border-2 border-blue-200 rounded-full w-5 h-5 flex items-center justify-center">
+                  <div className="w-2 h-2 bg-blue-200 rounded-full animate-ping" />
                 </div>
-                <div className="flex gap-2 mt-1">
-                  <div className="w-1 h-3 bg-green-400 rounded-full" />
-                  <div className="w-1 h-2 bg-amber-400 rounded-full" />
-                  <div className="w-1 h-4 bg-red-400 rounded-full" />
+                <div className="absolute -bottom-1 left-0 right-0 text-center">
+                  <div className="inline-block bg-blue-900/90 border border-blue-400 px-1 py-0.5 text-[4px] text-blue-200 font-black tracking-tight">
+                    CYL+POLISH
+                  </div>
                 </div>
               </div>
             )}
@@ -2077,6 +2076,17 @@ export default function GameWorld({
           </button>
         </div>
       )}
+
+      {/* Clinic Log Overlay */}
+      <AnimatePresence>
+        {clinicLogOpen && (
+          <ClinicLogOverlay
+            revenue={revenue}
+            tasks={tasks}
+            onClose={() => setClinicLogOpen(false)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
