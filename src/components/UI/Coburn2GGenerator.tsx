@@ -53,7 +53,7 @@ const SHAPE_NAMES: LensShape[] = ["CIRCLE","SQUARE","RECTANGLE","AVIATOR","CAT-E
 // ─── WORK TICKET GENERATION ─────────────────────────────────────────────────
 
 function generateWorkTicket() {
-  const spheres = ["-4.00","-3.50","-3.00","-2.50","-2.25","-2.00","-1.75","-1.50","-1.25","-1.00","-0.75","-0.50","PL","+0.50","+1.00","+1.50","+2.00"];
+  const spheres = ["-4.00","-3.50","-3.00","-2.50","-2.25","-2.00","-1.75","-1.50","-1.25","-1.00","-0.75","-0.50","0.00","+0.50","+1.00","+1.50","+2.00"];
   const cylinders = ["-2.25","-2.00","-1.75","-1.50","-1.25","-1.00","-0.75","-0.50","-0.25"];
   return {
     sphere: spheres[Math.floor(Math.random() * spheres.length)],
@@ -346,11 +346,12 @@ const Keypad: React.FC<KeypadProps> = ({ onKeyPress, disabled }) => {
     ["4","5","6"],
     ["1","2","3"],
     ["-","0","."],
+    ["+","BS","ENT"],
   ];
 
   return (
     <div className="flex flex-col gap-1.5 p-2" style={{ opacity: disabled ? 0.5 : 1 }}>
-      {keys.map((row, ri) => (
+      {keys.slice(0, 4).map((row, ri) => (
         <div key={ri} className="flex gap-1.5 justify-center">
           {row.map((k) => (
             <button
@@ -373,19 +374,30 @@ const Keypad: React.FC<KeypadProps> = ({ onKeyPress, disabled }) => {
           ))}
         </div>
       ))}
-      {/* Enter / Backspace row */}
+      {/* Special Bottom Row */}
       <div className="flex gap-1.5 justify-center mt-1">
+        <button
+          onClick={() => onKeyPress("+")}
+          disabled={disabled}
+          className="flex items-center justify-center text-[9px] font-bold font-mono text-white rounded cursor-pointer active:scale-95 transition-transform"
+          style={{
+            width: 24,
+            height: 24,
+            background: "linear-gradient(180deg, #3a3a3a 0%, #222 50%, #1a1a1a 100%)",
+            border: "1px solid #555",
+          }}
+        >
+          +
+        </button>
         <button
           onClick={() => onKeyPress("BACK")}
           disabled={disabled}
           className="flex items-center justify-center text-[7px] font-bold font-mono text-white rounded cursor-pointer active:scale-95 transition-transform"
           style={{
-            width: 52,
-            height: 22,
+            width: 38,
+            height: 24,
             background: "linear-gradient(180deg, #4a3a2a 0%, #3a2a1a 50%, #2a1a0a 100%)",
             border: "1px solid #665544",
-            borderTopColor: "#776655",
-            borderLeftColor: "#776655",
           }}
         >
           BS
@@ -395,15 +407,13 @@ const Keypad: React.FC<KeypadProps> = ({ onKeyPress, disabled }) => {
           disabled={disabled}
           className="flex items-center justify-center text-[7px] font-bold font-mono text-white rounded cursor-pointer active:scale-95 transition-transform"
           style={{
-            width: 52,
-            height: 22,
+            width: 38,
+            height: 24,
             background: "linear-gradient(180deg, #2a4a3a 0%, #1a3a2a 50%, #0a2a1a 100%)",
             border: "1px solid #446655",
-            borderTopColor: "#557766",
-            borderLeftColor: "#557766",
           }}
         >
-          ENTER
+          ENT
         </button>
       </div>
     </div>
@@ -661,8 +671,8 @@ export const Coburn2GGenerator: React.FC<Coburn2GGeneratorProps> = ({ onClose })
         return;
       }
 
-      if (phase === "SHOW_SHAPE") {
-        if (key === "ENTER" || /^\d$/.test(key) || key === "." || key === "-") {
+            if (phase === "SHOW_SHAPE") {
+        if (key === "ENTER" || key === "ENT" || /^\d$/.test(key) || key === "." || key === "-" || key === "+") {
           setPhase("DATA_ENTRY");
           setDataInput({ sphere: "", cylinder: "", axis: "" });
           setCurrentField("sphere");
@@ -679,7 +689,7 @@ export const Coburn2GGenerator: React.FC<Coburn2GGeneratorProps> = ({ onClose })
           return;
         }
 
-        if (key === "ENTER") {
+        if (key === "ENTER" || key === "ENT") {
           if (currentField === "axis" && dataInput.sphere && dataInput.cylinder && dataInput.axis) {
             if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
             playBeep(1100, 0.2);
@@ -698,10 +708,11 @@ export const Coburn2GGenerator: React.FC<Coburn2GGeneratorProps> = ({ onClose })
           if (currentField === "axis" && /^\d$/.test(key)) {
             setDataInput((prev) => ({ ...prev, axis: (prev.axis + key).slice(0, 3) }));
             playBeep(660, 0.05);
-          } else if (currentField !== "axis" && (key === "-" || key === "." || /^\d$/.test(key))) {
+          } else if (currentField !== "axis" && (key === "-" || key === "+" || key === "." || /^\d$/.test(key))) {
             if (currentVal === "" && !["+","-","0","1","2","3","4","5","6","7","8","9","."].includes(key)) return;
             if (key === "." && currentVal.includes(".")) return;
             if (key === "-" && currentVal !== "") return;
+            if (key === "+" && currentVal !== "") return;
             setDataInput((prev) => ({ ...prev, [currentField]: prev[currentField] + key }));
             playBeep(660, 0.05);
           }
@@ -722,8 +733,9 @@ export const Coburn2GGenerator: React.FC<Coburn2GGeneratorProps> = ({ onClose })
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") { onClose(); return; }
       // Map keyboard to keypad actions
-      if (e.key === "Backspace") { handleKeypadPress("BACK"); return; }
+            if (e.key === "Backspace") { handleKeypadPress("BACK"); return; }
       if (e.key === "Enter" || e.key === "NumpadEnter") { handleKeypadPress("ENTER"); return; }
+      if (e.key === "+" || e.key === "NumpadAdd") { handleKeypadPress("+"); return; }
       if (e.key === " " || e.key === "Space") {
         if (phase === "CUTTING" && cuttingActive) {
           e.preventDefault();
@@ -740,18 +752,18 @@ export const Coburn2GGenerator: React.FC<Coburn2GGeneratorProps> = ({ onClose })
     return () => window.removeEventListener("keydown", handler);
   }, [handleKeypadPress, phase, cuttingActive, performTimingHit]);
 
-  // ── DATA ENTRY COUNTDOWN TIMER (8 seconds) ───────────────────────────────
+    // ── DATA ENTRY COUNTDOWN TIMER (15 seconds) ──────────────────────────────
   useEffect(() => {
     if (phase !== "DATA_ENTRY") {
       if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
       return;
     }
-    setDataTimer(8);
-    dataTimerRef.current = 8;
+    setDataTimer(15);
+    dataTimerRef.current = 15;
     setCountdownWarning(false);
     timerIntervalRef.current = window.setInterval(() => {
-      dataTimerRef.current = (dataTimerRef.current ?? 8) - 0.1;
-      setDataTimer(Math.round((dataTimerRef.current ?? 8) * 10) / 10);
+      dataTimerRef.current = (dataTimerRef.current ?? 15) - 0.1;
+      setDataTimer(Math.round((dataTimerRef.current ?? 15) * 10) / 10);
       if ((dataTimerRef.current ?? 0) <= 3) setCountdownWarning(true);
       if ((dataTimerRef.current ?? 0) <= 0) {
         clearInterval(timerIntervalRef.current);
@@ -798,13 +810,21 @@ export const Coburn2GGenerator: React.FC<Coburn2GGeneratorProps> = ({ onClose })
     return () => { if (timingAnimRef.current) cancelAnimationFrame(timingAnimRef.current); };
   }, [cuttingActive, phase, currentSpeed, timingDir]);
 
-  // ── CALCULATE RESULT ─────────────────────────────────────────────────────
+    // ── CALCULATE RESULT ─────────────────────────────────────────────────────
   const calculateResult = useCallback(() => {
     const target = workTicket;
     const input = dataInput;
-    const sphCorrect = input.sphere === target.sphere;
-    const cylCorrect = input.cylinder === target.cylinder;
-    const axisCorrect = input.axis === target.axis;
+
+    const parseOptic = (s: string) => {
+      if (!s || s === "—") return NaN;
+      if (s.toUpperCase() === "PL") return 0;
+      return parseFloat(s);
+    };
+
+    const sphCorrect = parseOptic(input.sphere) === parseOptic(target.sphere);
+    const cylCorrect = parseOptic(input.cylinder) === parseOptic(target.cylinder);
+    const axisCorrect = parseInt(input.axis) === parseInt(target.axis);
+
     const dataAccuracy = sphCorrect && cylCorrect && axisCorrect
       ? 40
       : ((sphCorrect ? 1 : 0) + (cylCorrect ? 1 : 0) + (axisCorrect ? 1 : 0)) / 3 * 30;
