@@ -1723,8 +1723,12 @@ export default function GameWorld({
                   : obj.type === "display_case" || obj.type === "display"
                     ? "CLEAN_FRAMES"
                     : obj.type === "reception_computer"
-                      ? "WATCH YOUTUBE"
-                      : "INTERACT"}
+                        ? "WATCH YOUTUBE"
+                        : obj.type === "coburn_generator"
+                          ? "GENERATE_LENS"
+                          : obj.type === "finer_cylinder_combo"
+                            ? "POLISH_LENS"
+                            : "INTERACT"}
               </div>
             );
           return null;

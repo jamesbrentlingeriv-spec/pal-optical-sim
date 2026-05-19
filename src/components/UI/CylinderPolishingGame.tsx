@@ -209,14 +209,18 @@ export function CylinderPolishingGame({ onClose }: CylinderPolishingGameProps) {
     };
   }, []);
 
-  // ─── START CYCLE ────────────────────────────────────────────────────────────
-  //
-  // Called when the player clicks the START button. Resets all state to
-  // initial values, then begins the timer, slurry depletion, and pressure
-  // spike generation loops.
-  //
+    // ─── START CYCLE ────────────────────────────────────────────────────────────
+  
+  const stopAllIntervals = useCallback(() => {
+    if (gameLoopRef.current) clearInterval(gameLoopRef.current);
+    if (slurryIntervalRef.current) clearInterval(slurryIntervalRef.current);
+    if (spikeIntervalRef.current) clearInterval(spikeIntervalRef.current);
+    if (spikeTimerRef.current) clearInterval(spikeTimerRef.current);
+  }, []);
+
   const startCycle = useCallback(() => {
     // Reset all state
+    stopAllIntervals();
     setCycleActive(true);
     setTimeLeft(CYCLE_DURATION);
     setSlurryLevel(MAX_SLURRY);
@@ -243,11 +247,17 @@ export function CylinderPolishingGame({ onClose }: CylinderPolishingGameProps) {
       const remaining = Math.max(0, Math.ceil((totalDuration - elapsed) / 1000));
       setTimeLeft(remaining);
 
-      if (remaining <= 0) {
+            if (remaining <= 0) {
         // Timer expired — check if we won or already failed
         if (mountedRef.current) {
-          setResult("win");
-          setCycleActive(false);
+          setResult((prev) => {
+            if (prev === null) {
+              stopAllIntervals();
+              setCycleActive(false);
+              return "win";
+            }
+            return prev;
+          });
         }
       }
     }, 100);
@@ -261,8 +271,9 @@ export function CylinderPolishingGame({ onClose }: CylinderPolishingGameProps) {
     slurryIntervalRef.current = window.setInterval(() => {
       setSlurryLevel((prev) => {
         const next = prev - SLURRY_DEPLETION_RATE;
-        if (next <= 0 && mountedRef.current) {
+                if (next <= 0 && mountedRef.current) {
           // Slurry depleted → failure
+          stopAllIntervals();
           setFailureReason("LENSES SCRATCHED — SLURRY DEPLETED");
           setResult("fail");
           setLensesRuined(true);
@@ -304,15 +315,15 @@ export function CylinderPolishingGame({ onClose }: CylinderPolishingGameProps) {
             setSpikeTimeLeft(remaining);
             setSpikeTimerPercent(percent);
 
-            if (remaining <= 0 && mountedRef.current) {
+                        if (remaining <= 0 && mountedRef.current) {
               // Player failed to respond → lens pops off → FAILURE
+              stopAllIntervals();
               setFailureReason("LENS POPPED OFF CHUCK — PRESSURE SPIKE UNCHECKED");
               setResult("fail");
               setLensesRuined(true);
               setCycleActive(false);
               // Clear spike state
               setPressureSpikeBay(null);
-              if (spikeTimerRef.current) clearInterval(spikeTimerRef.current);
             }
           }, 50);
 
@@ -371,14 +382,10 @@ export function CylinderPolishingGame({ onClose }: CylinderPolishingGameProps) {
 
   // ─── CLOSE HANDLER ──────────────────────────────────────────────────────────
   //
-  const handleClose = useCallback(() => {
-    // Clean up all intervals
-    if (gameLoopRef.current) clearInterval(gameLoopRef.current);
-    if (slurryIntervalRef.current) clearInterval(slurryIntervalRef.current);
-    if (spikeIntervalRef.current) clearInterval(spikeIntervalRef.current);
-    if (spikeTimerRef.current) clearInterval(spikeTimerRef.current);
+    const handleClose = useCallback(() => {
+    stopAllIntervals();
     onClose();
-  }, [onClose]);
+  }, [onClose, stopAllIntervals]);
 
   // ─── COMPUTE SLURRY BAR COLOR ───────────────────────────────────────────────
   //
