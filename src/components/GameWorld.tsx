@@ -74,7 +74,7 @@ const PATIENT_BASES_FEMALE = [
 let nextMaleSpriteIndex = 0;
 let nextFemaleSpriteIndex = 0;
 
-const SPRITE_BASES = ["james", "drrobbins", "tracy", "sabrina", "linda"];
+const SPRITE_BASES = ["james", "drrobbins", "drklecker", "tracy", "sabrina", "linda"];
 
 const MALE_NAMES = [
   "Robert",
@@ -721,9 +721,25 @@ export default function GameWorld({
       Math.pow(drRobbins.x - playerPos.x, 2) +
         Math.pow(drRobbins.y - playerPos.y, 2),
     );
-    if (distToRobbins < 80) {
+        if (distToRobbins < 80) {
       setGameState(GameState.EYE_EXAM);
       return;
+    }
+    const drKlecker = npcStates.find((n: any) => n.id === "drklecker");
+    if (drKlecker) {
+      const distToKlecker = Math.sqrt(
+        Math.pow(drKlecker.x - playerPos.x, 2) +
+          Math.pow(drKlecker.y - playerPos.y, 2),
+      );
+      if (distToKlecker < 80) {
+        const lKleck = drKlecker.dialogue
+          ? drKlecker.dialogue[Math.floor(Math.random() * drKlecker.dialogue.length)]
+          : null;
+        if (lKleck) {
+          setDialogue({ speaker: "Dr. Klecker", message: lKleck });
+          return;
+        }
+      }
     }
     for (const obj of SHOP_OBJECTS) {
       const dist = Math.sqrt(
