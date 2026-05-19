@@ -156,7 +156,8 @@ export default function App() {
             gameState === GameState.AUTOREFRACTOR ||
             gameState === GameState.EDGER ||
             gameState === GameState.YOUTUBE ||
-            gameState === GameState.COBURN_GENERATOR) && (
+            gameState === GameState.COBURN_GENERATOR ||
+            gameState === GameState.CYLINDER_POLISHING) && (
             <GameWorld
               key="world"
               gameState={gameState}
