@@ -12,6 +12,8 @@ export enum GameState {
   AUTOREFRACTOR,
   EDGER,
   COBURN_GENERATOR,
+  CYLINDER_POLISHING,
+  CLINIC_LOG,
 }
 
 export interface Patient {

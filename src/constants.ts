@@ -450,6 +450,14 @@ export const SHOP_OBJECTS = [
     height: 100,
   },
   { id: "finer", type: "finer", x: 2250, y: 320, width: 80, height: 80 },
+  {
+    id: "cylinder_polishing_machine",
+    type: "cylinder_polisher",
+    x: 2100,
+    y: 420,
+    width: 120,
+    height: 100,
+  },
 
   // Dispensing Tables (Bottom Area)
   {

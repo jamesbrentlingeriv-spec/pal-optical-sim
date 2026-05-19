@@ -31,6 +31,7 @@ import { EyeExamGame } from "./UI/EyeExamGame";
 import { AutorefractorGame } from "./UI/AutorefractorGame";
 import { EdgerGame } from "./UI/EdgerGame";
 import { Coburn2GGenerator } from "./UI/Coburn2GGenerator";
+import { CylinderPolishingGame } from "./UI/CylinderPolishingGame";
 import { useWindowSize } from "../hooks/useWindowSize";
 
 interface GameWorldProps {
@@ -231,10 +232,17 @@ export default function GameWorld({
     speaker: string;
     message: string;
   } | null>(null);
-  const [tasks, setTasks] = useState<{ [key: string]: boolean }>({
-    check_inventory: false,
-    greet_patients: false,
-  });
+   const [tasks, setTasks] = useState<{ [key: string]: boolean }>({
+     check_inventory: false,
+     greet_patients: false,
+   });
+   const [revenue, setRevenue] = useState(0);
+   const [gameTime, setGameTime] = useState({ hours: 9, minutes: 0, period: "AM" as const });
+   const [clinicLogOpen, setClinicLogOpen] = useState(false);
+   const [gameDate, setGameDate] = useState({
+     day: "Monday",
+     date: "May 18",
+   });
 
   const playerInfo = NPCS.find((n) => n.id === playerCharacterId) || NPCS[0];
   const [npcStates, setNpcStates] = useState(
@@ -748,6 +756,9 @@ export default function GameWorld({
         }
         if (obj.type === "coburn_generator") {
           setGameState(GameState.COBURN_GENERATOR);
+        }
+        if (obj.type === "cylinder_polisher") {
+          setGameState(GameState.CYLINDER_POLISHING);
         }
         if (obj.type === "display_case" || obj.type === "display") {
           setJamesSpeech("Clean frames");
@@ -1479,6 +1490,30 @@ export default function GameWorld({
                 alt="finer"
               />
             )}
+            {obj.type === "cylinder_polisher" && (
+              <div className="w-full h-full flex flex-col items-center justify-center bg-blue-900 rounded-sm border-2 border-blue-400">
+                <div className="text-[6px] text-blue-200 font-black mb-1">CYLINDER</div>
+                <div className="text-[4px] text-blue-300">POLISHER</div>
+                <div className="flex gap-1 mt-1">
+                  {[...Array(4)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="w-3 h-3 rounded-full bg-blue-300 border border-blue-200"
+                      style={{
+                        animation: i % 2 === 0
+                          ? "pulse-spindle 0.8s ease-in-out infinite"
+                          : "pulse-spindle 0.8s ease-in-out 0.4s infinite",
+                      }}
+                    />
+                  ))}
+                </div>
+                <div className="flex gap-2 mt-1">
+                  <div className="w-1 h-3 bg-green-400 rounded-full" />
+                  <div className="w-1 h-2 bg-amber-400 rounded-full" />
+                  <div className="w-1 h-4 bg-red-400 rounded-full" />
+                </div>
+              </div>
+            )}
             {obj.type === "phone" && (
               <div className="relative">
                 <PhoneIcon
@@ -1864,6 +1899,9 @@ export default function GameWorld({
         )}
         {gameState === GameState.COBURN_GENERATOR && (
           <Coburn2GGenerator onClose={() => setGameState(GameState.PLAYING)} />
+        )}
+        {gameState === GameState.CYLINDER_POLISHING && (
+          <CylinderPolishingGame onClose={() => setGameState(GameState.PLAYING)} />
         )}
         {activeGame === "cleaning" && (
           <FrameCleaningGame
