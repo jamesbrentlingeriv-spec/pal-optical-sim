@@ -12,7 +12,7 @@ function getIncompleteTasks(tasks: { [key: string]: boolean }) {
   return INCOMPLETE_TASKS.filter((t) => !tasks[t.stateKey]);
 }
 
-export const ClinicLogOverlay: React.FC<ClinicLogOverlayProps> = ({
+const ClinicLogOverlay: React.FC<ClinicLogOverlayProps> = ({
   revenue,
   tasks,
   onClose,
@@ -36,7 +36,7 @@ export const ClinicLogOverlay: React.FC<ClinicLogOverlayProps> = ({
         className="fixed inset-0 z-210 flex items-center justify-center pointer-events-none"
       >
         <div
-          className="pointer-events-auto bg-black border-8 border-white p-6 shadow-[16px_16px_0_0_rgba(0,0,0,1)] w-[420px] max-w-[90vw] pixel-border"
+          className="pointer-events-auto bg-black border-8 border-white p-6 shadow-[16px_16px_0_0_rgba(0,0,0,1)] w-105 max-w-[90vw] pixel-border"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
@@ -77,7 +77,7 @@ export const ClinicLogOverlay: React.FC<ClinicLogOverlayProps> = ({
                 ✓ All tasks completed! Great work!
               </div>
             ) : (
-              <div className="space-y-2 max-h-[240px] overflow-y-auto">
+              <div className="space-y-2 max-h-60 overflow-y-auto">
                 {incompleteTasks.map((task) => (
                   <div
                     key={task.id}
@@ -106,3 +106,5 @@ export const ClinicLogOverlay: React.FC<ClinicLogOverlayProps> = ({
     </>
   );
 };
+
+export default ClinicLogOverlay;

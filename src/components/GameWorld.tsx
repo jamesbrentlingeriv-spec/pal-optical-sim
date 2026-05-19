@@ -32,7 +32,7 @@ import { AutorefractorGame } from "./UI/AutorefractorGame";
 import { EdgerGame } from "./UI/EdgerGame";
 import { Coburn2GGenerator } from "./UI/Coburn2GGenerator";
 import { CylinderPolishingGame } from "./UI/CylinderPolishingGame";
-import { ClinicLogOverlay } from "./UI/ClinicLogOverlay";
+import ClinicLogOverlay from "./UI/ClinicLogOverlay";
 import { useWindowSize } from "../hooks/useWindowSize";
 
 interface GameWorldProps {
@@ -526,89 +526,89 @@ export default function GameWorld({
     return () => clearInterval(interval);
   }, []);
 
-  // Game Loop for movement
-  useEffect(() => {
-    if (gameState !== GameState.PLAYING) return;
-    const interval = setInterval(() => {
-      let moved = false;
-      setPlayerPos((prev) => {
-        let nx = prev.x,
-          ny = prev.y;
-        const speed = 5;
-        if (keysPressed.current["ArrowUp"] || keysPressed.current["w"]) {
-          ny -= speed;
-          moved = true;
-        }
-        if (keysPressed.current["ArrowDown"] || keysPressed.current["s"]) {
-          ny += speed;
-          moved = true;
-        }
-        if (keysPressed.current["ArrowLeft"] || keysPressed.current["a"]) {
-          nx -= speed;
-          moved = true;
-        }
-        if (keysPressed.current["ArrowRight"] || keysPressed.current["d"]) {
-          nx += speed;
-          moved = true;
-        }
-        setIsPlayerMoving(moved);
-        let dx = "",
-          dy = "";
-        if (keysPressed.current["ArrowUp"] || keysPressed.current["w"])
-          dy = "north";
-        if (keysPressed.current["ArrowDown"] || keysPressed.current["s"])
-          dy = "south";
-        if (keysPressed.current["ArrowLeft"] || keysPressed.current["a"])
-          dx = "west";
-        if (keysPressed.current["ArrowRight"] || keysPressed.current["d"])
-          dx = "east";
-        if (dx && dy) setPlayerDirection(`${dy}-${dx}` as any);
-        else if (dx) setPlayerDirection(dx as any);
-        else if (dy) setPlayerDirection(dy as any);
-        nx = Math.max(20, Math.min(SHOP_WIDTH - 20, nx));
-        ny = Math.max(20, Math.min(SHOP_HEIGHT - 20, ny));
-        const w1 = 600,
-          dt1 = 150,
-          db1 = 350;
-        if (Math.abs(nx - w1) < 20 && (ny < dt1 || ny > db1)) {
-          nx = prev.x < w1 ? w1 - 20 : w1 + 20;
-        }
-        const w2 = 1800,
-          dt2 = 350,
-          db2 = 550;
-        if (Math.abs(nx - w2) < 20 && (ny < dt2 || ny > db2)) {
-          nx = prev.x < w2 ? w2 - 20 : w2 + 20;
-        }
-        return { x: nx, y: ny };
-      });
-      if (!moved && Math.random() > 0.99) {
-        const dirs: any[] = [
-          "north",
-          "south",
-          "east",
-          "west",
-          "north-east",
-          "north-west",
-          "south-east",
-          "south-west",
-        ];
-        setPlayerDirection(dirs[Math.floor(Math.random() * dirs.length)]);
+// Game Loop for movement
+useEffect(() => {
+  if (gameState !== GameState.PLAYING || clinicLogOpen) return;
+  const interval = setInterval(() => {
+    let moved = false;
+    setPlayerPos((prev) => {
+      let nx = prev.x,
+        ny = prev.y;
+      const speed = 5;
+      if (keysPressed.current["ArrowUp"] || keysPressed.current["w"]) {
+        ny -= speed;
+        moved = true;
       }
-    }, 1000 / 60);
-    const hd = (e: KeyboardEvent) => {
-      keysPressed.current[e.key] = true;
-    };
-    const hu = (e: KeyboardEvent) => {
-      keysPressed.current[e.key] = false;
-    };
-    window.addEventListener("keydown", hd);
-    window.addEventListener("keyup", hu);
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("keydown", hd);
-      window.removeEventListener("keyup", hu);
-    };
-  }, [gameState]);
+      if (keysPressed.current["ArrowDown"] || keysPressed.current["s"]) {
+        ny += speed;
+        moved = true;
+      }
+      if (keysPressed.current["ArrowLeft"] || keysPressed.current["a"]) {
+        nx -= speed;
+        moved = true;
+      }
+      if (keysPressed.current["ArrowRight"] || keysPressed.current["d"]) {
+        nx += speed;
+        moved = true;
+      }
+      setIsPlayerMoving(moved);
+      let dx = "",
+        dy = "";
+      if (keysPressed.current["ArrowUp"] || keysPressed.current["w"])
+        dy = "north";
+      if (keysPressed.current["ArrowDown"] || keysPressed.current["s"])
+        dy = "south";
+      if (keysPressed.current["ArrowLeft"] || keysPressed.current["a"])
+        dx = "west";
+      if (keysPressed.current["ArrowRight"] || keysPressed.current["d"])
+        dx = "east";
+      if (dx && dy) setPlayerDirection(`${dy}-${dx}` as any);
+      else if (dx) setPlayerDirection(dx as any);
+      else if (dy) setPlayerDirection(dy as any);
+      nx = Math.max(20, Math.min(SHOP_WIDTH - 20, nx));
+      ny = Math.max(20, Math.min(SHOP_HEIGHT - 20, ny));
+      const w1 = 600,
+        dt1 = 150,
+        db1 = 350;
+      if (Math.abs(nx - w1) < 20 && (ny < dt1 || ny > db1)) {
+        nx = prev.x < w1 ? w1 - 20 : w1 + 20;
+      }
+      const w2 = 1800,
+        dt2 = 350,
+        db2 = 550;
+      if (Math.abs(nx - w2) < 20 && (ny < dt2 || ny > db2)) {
+        nx = prev.x < w2 ? w2 - 20 : w2 + 20;
+      }
+      return { x: nx, y: ny };
+    });
+    if (!moved && Math.random() > 0.99) {
+      const dirs: any[] = [
+        "north",
+        "south",
+        "east",
+        "west",
+        "north-east",
+        "north-west",
+        "south-east",
+        "south-west",
+      ];
+      setPlayerDirection(dirs[Math.floor(Math.random() * dirs.length)]);
+    }
+  }, 1000 / 60);
+  const hd = (e: KeyboardEvent) => {
+    keysPressed.current[e.key] = true;
+  };
+  const hu = (e: KeyboardEvent) => {
+    keysPressed.current[e.key] = false;
+  };
+  window.addEventListener("keydown", hd);
+  window.addEventListener("keyup", hu);
+  return () => {
+    clearInterval(interval);
+    window.removeEventListener("keydown", hd);
+    window.removeEventListener("keyup", hu);
+  };
+}, [gameState, clinicLogOpen]);
 
   // Proximity detection for HUD effects (Brands)
   useEffect(() => {
