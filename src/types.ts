@@ -31,10 +31,14 @@ export interface Patient {
     | "BEING_HELPED"
     | "WAITING_FOR_LAB"
     | "READY_FOR_PICKUP"
+    | "READY_FOR_CHECKOUT"
     | "COMPLETED";
   wantsVerification?: boolean;
   spriteBase?: string;
   spriteUrl?: string;
+  needsEyeExam?: boolean;
+  checkoutAmount?: number;
+  isFollowing?: boolean;
 }
 
 export interface InventoryItem {

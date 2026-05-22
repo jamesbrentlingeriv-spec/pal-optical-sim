@@ -3,9 +3,9 @@
   "states": [
     {
       "character": {
-        "id": "7c4104d5-7b8d-4a20-879d-d0be70924a40",
-        "name": "older lady with long blonde",
-        "prompt": "older lady with long blonde hair and wears eyeglasses. she is wearing a purple blouse and black leggings",
+        "id": "ec83182d-4149-46d9-bc42-9f0732b5c782",
+        "name": "A woman with light brown",
+        "prompt": "A woman with light brown hair and brown plastic-rimmed eyeglasses, wearing a light brown cardigan over a white t-shirt, black leggings, and white sneakers, standing in a relaxed posture.",
         "size": {
           "width": 92,
           "height": 92
@@ -13,24 +13,24 @@
         "template_id": "mannequin",
         "directions": 8,
         "view": "low top-down",
-        "created_at": "2026-05-16T02:51:45.246818+00:00"
+        "created_at": "2026-05-22T03:04:26.774925+00:00"
       },
-      "folder": "states/older_lady_with_long_blonde",
+      "folder": "A_woman_with_light_brown",
       "frames": {
         "rotations": {
-          "south": "states/older_lady_with_long_blonde/rotations/south.png",
-          "south-east": "states/older_lady_with_long_blonde/rotations/south-east.png",
-          "east": "states/older_lady_with_long_blonde/rotations/east.png",
-          "north-east": "states/older_lady_with_long_blonde/rotations/north-east.png",
-          "north": "states/older_lady_with_long_blonde/rotations/north.png",
-          "north-west": "states/older_lady_with_long_blonde/rotations/north-west.png",
-          "west": "states/older_lady_with_long_blonde/rotations/west.png",
-          "south-west": "states/older_lady_with_long_blonde/rotations/south-west.png"
+          "south": "A_woman_with_light_brown/rotations/south.png",
+          "south-east": "A_woman_with_light_brown/rotations/south-east.png",
+          "east": "A_woman_with_light_brown/rotations/east.png",
+          "north-east": "A_woman_with_light_brown/rotations/north-east.png",
+          "north": "A_woman_with_light_brown/rotations/north.png",
+          "north-west": "A_woman_with_light_brown/rotations/north-west.png",
+          "west": "A_woman_with_light_brown/rotations/west.png",
+          "south-west": "A_woman_with_light_brown/rotations/south-west.png"
         },
         "animations": {}
       }
     }
   ],
   "export_version": "3.0",
-  "export_date": "2026-05-16T03:15:11.339699"
+  "export_date": "2026-05-22T04:48:30.553271"
 }

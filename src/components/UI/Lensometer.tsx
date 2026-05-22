@@ -18,28 +18,41 @@ export default function Lensometer({ onClose }: LensometerProps) {
   const isMobile = width < 768;
   const scale = isMobile ? Math.min(1, width / 700) : 1;
   const [rotation, setRotation] = useState(0);
-  const [targetRotation] = useState(Math.floor(Math.random() * 360));
+  const [targetRotation] = useState(() => Math.floor(Math.random() * 180));
 
   // Power state (-4.00 to +4.00 diopters)
   const [power, setPower] = useState(0);
-  const [targetPower] = useState(() => (Math.random() * 8 - 4).toFixed(2));
+  const [targetPower] = useState<number>(() =>
+    parseFloat((Math.random() * 8 - 4).toFixed(2)),
+  );
 
   const [isAligned, setIsAligned] = useState(false);
 
+  const [rotTolerance] = useState(5);
+  const [powerTolerance] = useState(0.25);
+
   useEffect(() => {
     const rotDiff = Math.abs((rotation % 180) - (targetRotation % 180));
-    const powDiff = Math.abs(power - parseFloat(targetPower));
+    const powDiff = Math.abs(power - targetPower);
 
-    // Aligned if within 3 degrees and 0.12 diopters
-    if (rotDiff < 3 && powDiff < 0.15) {
+    // Aligned if within a more forgiving tolerance
+    if (rotDiff < rotTolerance && powDiff < powerTolerance) {
       setIsAligned(true);
     } else {
       setIsAligned(false);
     }
-  }, [rotation, targetRotation, power, targetPower]);
+  }, [
+    rotation,
+    targetRotation,
+    power,
+    targetPower,
+    rotTolerance,
+    powerTolerance,
+  ]);
 
   // Calculate blur based on power difference
-  const powerDiff = Math.abs(power - parseFloat(targetPower));
+  const rotDiff = Math.abs((rotation % 180) - (targetRotation % 180));
+  const powerDiff = Math.abs(power - targetPower);
   const blurAmount = Math.min(10, powerDiff * 5); // Max 10px blur
 
   const handlePowerWheel = (direction: number) => {
@@ -77,6 +90,17 @@ export default function Lensometer({ onClose }: LensometerProps) {
           <p className="text-blue-400 text-[8px] uppercase tracking-widest animate-pulse">
             Auto-Focus Active
           </p>
+          <div className="mt-4 bg-slate-800 border-2 border-blue-500 p-4 rounded-2xl text-left text-[10px] leading-snug text-slate-200">
+            <p className="font-black uppercase tracking-[2px] mb-2 text-blue-200">
+              Lensometer Goal
+            </p>
+            <p>
+              Match the axis and power values shown below. When the reticle is
+              clear and the status turns{" "}
+              <span className="font-black text-green-300">READY</span>, verify
+              the measurement.
+            </p>
+          </div>
         </div>
 
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
@@ -95,6 +119,29 @@ export default function Lensometer({ onClose }: LensometerProps) {
 
           {/* POWER WHEEL (Left side) */}
           <div className="flex flex-col items-center gap-4">
+            <div className="px-4 py-3 bg-slate-900 border-2 border-white rounded-2xl text-white text-[10px] text-center">
+              <div className="font-black uppercase tracking-[2px] text-blue-300 mb-1">
+                TARGET VALUES
+              </div>
+              <div>
+                Axis:{" "}
+                <span className="font-black text-white">{targetRotation}°</span>
+              </div>
+              <div>
+                Power:{" "}
+                <span className="font-black text-white">
+                  {targetPower > 0 ? "+" : ""}
+                  {targetPower.toFixed(2)}
+                </span>
+              </div>
+              <div className="mt-2 text-green-300">
+                Tolerance: ±{rotTolerance}° / ±{powerTolerance.toFixed(2)}
+              </div>
+              <div className="mt-2 text-slate-300 text-left text-[10px]">
+                Current: axis {rotDiff.toFixed(0)}° off, power{" "}
+                {powerDiff.toFixed(2)} off
+              </div>
+            </div>
             <div className="text-[8px] font-black text-slate-500 uppercase">
               Power
             </div>
@@ -296,18 +343,23 @@ export default function Lensometer({ onClose }: LensometerProps) {
             </div>
           </div>
 
-          {isAligned && (
-            <motion.button
-              initial={{ scale: 0.9 }}
-              animate={{ scale: [0.9, 1, 0.9] }}
-              transition={{ repeat: Infinity, duration: 0.5 }}
-              onClick={onClose}
-              className="px-8 py-4 bg-white text-black font-black hover:bg-slate-200 transition-all shadow-[6px_6px_0_0_rgba(0,0,0,1)] flex items-center gap-3 border-4 border-black"
-            >
-              <CheckCircle2 className="w-6 h-6" />
-              VERIFY
-            </motion.button>
-          )}
+          <motion.button
+            initial={{ scale: 0.9 }}
+            animate={isAligned ? { scale: [0.9, 1, 0.9] } : undefined}
+            transition={
+              isAligned ? { repeat: Infinity, duration: 0.5 } : undefined
+            }
+            onClick={isAligned ? onClose : undefined}
+            disabled={!isAligned}
+            className={`px-8 py-4 font-black text-2xl uppercase tracking-[0.2em] rounded-2xl transition-all shadow-[6px_6px_0_0_rgba(0,0,0,1)] flex items-center justify-center gap-3 border-4 border-black ${
+              isAligned
+                ? "bg-white text-black hover:bg-slate-200 cursor-pointer"
+                : "bg-slate-700 text-slate-400 cursor-not-allowed"
+            }`}
+          >
+            <CheckCircle2 className="w-6 h-6" />
+            SUBMIT
+          </motion.button>
 
           <div className="text-right text-[6px] text-slate-700 leading-relaxed uppercase">
             Device: PAL-9000

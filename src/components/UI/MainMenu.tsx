@@ -122,7 +122,7 @@ export default function MainMenu({ onStart, onOptions }: MainMenuProps) {
                 isIdle={false}
               />
               <CharacterSprite
-                spriteBase="tracy"
+                spriteBase="characters/tracy/An_older_lady_with_long"
                 direction="south"
                 size="large"
                 isIdle={false}
@@ -169,7 +169,7 @@ export default function MainMenu({ onStart, onOptions }: MainMenuProps) {
                 isIdle={false}
               />
               <CharacterSprite
-                spriteBase="characters/lisa/states/older_lady_with_long_blonde"
+                spriteBase="characters/lisa/A_woman_with_light_brown"
                 direction="south"
                 size="mega"
                 isIdle={false}
@@ -199,7 +199,7 @@ export default function MainMenu({ onStart, onOptions }: MainMenuProps) {
                 isIdle={false}
               />
               <CharacterSprite
-                spriteBase="tracy"
+                spriteBase="characters/tracy/An_older_lady_with_long"
                 direction="south"
                 size="large"
                 isIdle={false}
@@ -246,7 +246,7 @@ export default function MainMenu({ onStart, onOptions }: MainMenuProps) {
                 isIdle={false}
               />
               <CharacterSprite
-                spriteBase="characters/lisa/states/older_lady_with_long_blonde"
+                spriteBase="characters/lisa/A_woman_with_light_brown"
                 direction="south"
                 size="mega"
                 isIdle={false}

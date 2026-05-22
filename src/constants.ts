@@ -103,7 +103,7 @@ export const NPCS: NPC[] = [
     y: 200,
     avatar:
       "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&q=80&w=150&h=150",
-    spriteBase: "characters/lisa/states/older_lady_with_long_blonde",
+    spriteBase: "characters/lisa/A_woman_with_light_brown",
     dialogue: [
       "Will you and April stop fighting please?",
       "(picks up phone) Hey Finnleigh!!",
@@ -486,9 +486,25 @@ export interface TaskDefinition {
 }
 
 export const INCOMPLETE_TASKS: TaskDefinition[] = [
-  { id: "check_inventory", label: "Check Frame Inventory", stateKey: "check_inventory" },
-  { id: "greet_patients", label: "Greet Waiting Patients", stateKey: "greet_patients" },
-  { id: "clean_display", label: "Clean Display Cases", stateKey: "clean_display" },
-  { id: "process_lab_job", label: "Process Lab Jobs", stateKey: "process_lab_job" },
+  {
+    id: "check_inventory",
+    label: "Check Frame Inventory",
+    stateKey: "check_inventory",
+  },
+  {
+    id: "greet_patients",
+    label: "Greet Waiting Patients",
+    stateKey: "greet_patients",
+  },
+  {
+    id: "clean_display",
+    label: "Clean Display Cases",
+    stateKey: "clean_display",
+  },
+  {
+    id: "process_lab_job",
+    label: "Process Lab Jobs",
+    stateKey: "process_lab_job",
+  },
   { id: "answer_phone", label: "Answer Phone Calls", stateKey: "answer_phone" },
 ];

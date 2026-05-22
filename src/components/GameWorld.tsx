@@ -24,6 +24,7 @@ import {
 import Lensometer from "./UI/Lensometer";
 import Computer from "./UI/Computer";
 import Phone from "./UI/Phone";
+import { WriteUpGame } from "./UI/WriteUpGame";
 import { CharacterSprite } from "./CharacterSprite";
 import { FrameCleaningGame } from "./UI/FrameCleaningGame";
 import { FrameFittingGame } from "./UI/FrameFittingGame";
@@ -74,7 +75,14 @@ const PATIENT_BASES_FEMALE = [
 let nextMaleSpriteIndex = 0;
 let nextFemaleSpriteIndex = 0;
 
-const SPRITE_BASES = ["james", "drrobbins", "drklecker", "tracy", "sabrina", "linda"];
+const SPRITE_BASES = [
+  "james",
+  "drrobbins",
+  "drklecker",
+  "tracy",
+  "sabrina",
+  "linda",
+];
 
 const MALE_NAMES = [
   "Robert",
@@ -192,9 +200,6 @@ export default function GameWorld({
         spriteBase,
         x: 950,
         y: 200,
-        direction: "south",
-        targetX: 950,
-        targetY: 200,
         isMoving: false,
       } as any;
       setPatients([initialPatient]);
@@ -216,7 +221,10 @@ export default function GameWorld({
   const [isSageEnthusiasm, setIsSageEnthusiasm] = useState(false);
   const [sagePhase, setSagePhase] = useState<0 | 1 | 2>(0);
   const [activeBrand, setActiveBrand] = useState<string | null>(null);
-  const [activeGame, setActiveGame] = useState<"cleaning" | "fitting" | null>(
+  const [activeGame, setActiveGame] = useState<
+    "cleaning" | "fitting" | "writeup" | null
+  >(null);
+  const [activeExamPatient, setActiveExamPatient] = useState<Patient | null>(
     null,
   );
   const [cleaningBrand, setCleaningBrand] = useState<string | null>(null);
@@ -233,17 +241,27 @@ export default function GameWorld({
     speaker: string;
     message: string;
   } | null>(null);
-   const [tasks, setTasks] = useState<{ [key: string]: boolean }>({
-     check_inventory: false,
-     greet_patients: false,
-   });
-   const [revenue, setRevenue] = useState(0);
-   const [gameTime, setGameTime] = useState({ hours: 9, minutes: 0, period: "AM" as const });
-   const [clinicLogOpen, setClinicLogOpen] = useState(false);
-   const [gameDate, setGameDate] = useState({
-     day: "Monday",
-     date: "May 18",
-   });
+  useEffect(() => {
+    if (!dialogue) return;
+    const timeout = window.setTimeout(() => setDialogue(null), 2500);
+    return () => window.clearTimeout(timeout);
+  }, [dialogue]);
+
+  const [tasks, setTasks] = useState<{ [key: string]: boolean }>({
+    check_inventory: false,
+    greet_patients: false,
+  });
+  const [revenue, setRevenue] = useState(0);
+  const [gameTime, setGameTime] = useState({
+    hours: 9,
+    minutes: 0,
+    period: "AM" as const,
+  });
+  const [clinicLogOpen, setClinicLogOpen] = useState(false);
+  const [gameDate, setGameDate] = useState({
+    day: "Monday",
+    date: "May 18",
+  });
 
   const playerInfo = NPCS.find((n) => n.id === playerCharacterId) || NPCS[0];
   const [npcStates, setNpcStates] = useState(
@@ -258,6 +276,36 @@ export default function GameWorld({
     ) as any,
   );
   const keysPressed = useRef<{ [key: string]: boolean }>({});
+
+  const dialogueTarget = dialogue
+    ? (() => {
+        const key = dialogue.speaker.toLowerCase().replace(/\./g, "").trim();
+        if (key === "james") {
+          return { x: playerPos.x, y: playerPos.y };
+        }
+
+        const speakerMap: Record<string, string> = {
+          "dr robbins": "dr_robbins",
+          "dr klecker": "drklecker",
+          robby: "robby",
+          april: "april",
+          tracy: "tracy",
+          lisa: "lisa",
+          linda: "linda",
+          carribyan: "carribyan",
+          nairobi: "nairobi",
+        };
+
+        const id =
+          speakerMap[key] || NPCS.find((n) => n.name.toLowerCase() === key)?.id;
+        if (!id) return null;
+        return (
+          npcStates.find((n: any) => n.id === id) ||
+          NPCS.find((n) => n.id === id) ||
+          null
+        );
+      })()
+    : null;
 
   // Spawn patients periodically
   useEffect(() => {
@@ -304,6 +352,7 @@ export default function GameWorld({
           },
           status: "WAITING",
           wantsVerification: Math.random() > 0.7,
+          needsEyeExam: Math.random() > 0.7,
           spriteBase,
           x: 950 + patients.length * 80,
           y: 200,
@@ -431,6 +480,29 @@ export default function GameWorld({
       );
       setPatients((prev: any[]) =>
         prev.map((p: any) => {
+          if (p.isFollowing) {
+            const dx = playerPos.x - 30 - p.x;
+            const dy = playerPos.y + 40 - p.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const speed = 1.2;
+            if (dist < speed)
+              return { ...p, x: p.x + dx, y: p.y + dy, isMoving: false };
+            const dir =
+              Math.abs(dx) > Math.abs(dy)
+                ? dx > 0
+                  ? "east"
+                  : "west"
+                : dy > 0
+                  ? "south"
+                  : "north";
+            return {
+              ...p,
+              x: p.x + (dx / dist) * speed,
+              y: p.y + (dy / dist) * speed,
+              isMoving: true,
+              direction: dir,
+            };
+          }
           if (p.status === "COMPLETED") {
             const ex = 1200,
               ey = 850,
@@ -526,89 +598,89 @@ export default function GameWorld({
     return () => clearInterval(interval);
   }, []);
 
-// Game Loop for movement
-useEffect(() => {
-  if (gameState !== GameState.PLAYING || clinicLogOpen) return;
-  const interval = setInterval(() => {
-    let moved = false;
-    setPlayerPos((prev) => {
-      let nx = prev.x,
-        ny = prev.y;
-      const speed = 5;
-      if (keysPressed.current["ArrowUp"] || keysPressed.current["w"]) {
-        ny -= speed;
-        moved = true;
+  // Game Loop for movement
+  useEffect(() => {
+    if (gameState !== GameState.PLAYING || clinicLogOpen) return;
+    const interval = setInterval(() => {
+      let moved = false;
+      setPlayerPos((prev) => {
+        let nx = prev.x,
+          ny = prev.y;
+        const speed = 5;
+        if (keysPressed.current["ArrowUp"] || keysPressed.current["w"]) {
+          ny -= speed;
+          moved = true;
+        }
+        if (keysPressed.current["ArrowDown"] || keysPressed.current["s"]) {
+          ny += speed;
+          moved = true;
+        }
+        if (keysPressed.current["ArrowLeft"] || keysPressed.current["a"]) {
+          nx -= speed;
+          moved = true;
+        }
+        if (keysPressed.current["ArrowRight"] || keysPressed.current["d"]) {
+          nx += speed;
+          moved = true;
+        }
+        setIsPlayerMoving(moved);
+        let dx = "",
+          dy = "";
+        if (keysPressed.current["ArrowUp"] || keysPressed.current["w"])
+          dy = "north";
+        if (keysPressed.current["ArrowDown"] || keysPressed.current["s"])
+          dy = "south";
+        if (keysPressed.current["ArrowLeft"] || keysPressed.current["a"])
+          dx = "west";
+        if (keysPressed.current["ArrowRight"] || keysPressed.current["d"])
+          dx = "east";
+        if (dx && dy) setPlayerDirection(`${dy}-${dx}` as any);
+        else if (dx) setPlayerDirection(dx as any);
+        else if (dy) setPlayerDirection(dy as any);
+        nx = Math.max(20, Math.min(SHOP_WIDTH - 20, nx));
+        ny = Math.max(20, Math.min(SHOP_HEIGHT - 20, ny));
+        const w1 = 600,
+          dt1 = 150,
+          db1 = 350;
+        if (Math.abs(nx - w1) < 20 && (ny < dt1 || ny > db1)) {
+          nx = prev.x < w1 ? w1 - 20 : w1 + 20;
+        }
+        const w2 = 1800,
+          dt2 = 350,
+          db2 = 550;
+        if (Math.abs(nx - w2) < 20 && (ny < dt2 || ny > db2)) {
+          nx = prev.x < w2 ? w2 - 20 : w2 + 20;
+        }
+        return { x: nx, y: ny };
+      });
+      if (!moved && Math.random() > 0.99) {
+        const dirs: any[] = [
+          "north",
+          "south",
+          "east",
+          "west",
+          "north-east",
+          "north-west",
+          "south-east",
+          "south-west",
+        ];
+        setPlayerDirection(dirs[Math.floor(Math.random() * dirs.length)]);
       }
-      if (keysPressed.current["ArrowDown"] || keysPressed.current["s"]) {
-        ny += speed;
-        moved = true;
-      }
-      if (keysPressed.current["ArrowLeft"] || keysPressed.current["a"]) {
-        nx -= speed;
-        moved = true;
-      }
-      if (keysPressed.current["ArrowRight"] || keysPressed.current["d"]) {
-        nx += speed;
-        moved = true;
-      }
-      setIsPlayerMoving(moved);
-      let dx = "",
-        dy = "";
-      if (keysPressed.current["ArrowUp"] || keysPressed.current["w"])
-        dy = "north";
-      if (keysPressed.current["ArrowDown"] || keysPressed.current["s"])
-        dy = "south";
-      if (keysPressed.current["ArrowLeft"] || keysPressed.current["a"])
-        dx = "west";
-      if (keysPressed.current["ArrowRight"] || keysPressed.current["d"])
-        dx = "east";
-      if (dx && dy) setPlayerDirection(`${dy}-${dx}` as any);
-      else if (dx) setPlayerDirection(dx as any);
-      else if (dy) setPlayerDirection(dy as any);
-      nx = Math.max(20, Math.min(SHOP_WIDTH - 20, nx));
-      ny = Math.max(20, Math.min(SHOP_HEIGHT - 20, ny));
-      const w1 = 600,
-        dt1 = 150,
-        db1 = 350;
-      if (Math.abs(nx - w1) < 20 && (ny < dt1 || ny > db1)) {
-        nx = prev.x < w1 ? w1 - 20 : w1 + 20;
-      }
-      const w2 = 1800,
-        dt2 = 350,
-        db2 = 550;
-      if (Math.abs(nx - w2) < 20 && (ny < dt2 || ny > db2)) {
-        nx = prev.x < w2 ? w2 - 20 : w2 + 20;
-      }
-      return { x: nx, y: ny };
-    });
-    if (!moved && Math.random() > 0.99) {
-      const dirs: any[] = [
-        "north",
-        "south",
-        "east",
-        "west",
-        "north-east",
-        "north-west",
-        "south-east",
-        "south-west",
-      ];
-      setPlayerDirection(dirs[Math.floor(Math.random() * dirs.length)]);
-    }
-  }, 1000 / 60);
-  const hd = (e: KeyboardEvent) => {
-    keysPressed.current[e.key] = true;
-  };
-  const hu = (e: KeyboardEvent) => {
-    keysPressed.current[e.key] = false;
-  };
-  window.addEventListener("keydown", hd);
-  window.addEventListener("keyup", hu);
-  return () => {
-    clearInterval(interval);
-    window.removeEventListener("keydown", hd);
-    window.removeEventListener("keyup", hu);
-  };
-}, [gameState, clinicLogOpen]);
+    }, 1000 / 60);
+    const hd = (e: KeyboardEvent) => {
+      keysPressed.current[e.key] = true;
+    };
+    const hu = (e: KeyboardEvent) => {
+      keysPressed.current[e.key] = false;
+    };
+    window.addEventListener("keydown", hd);
+    window.addEventListener("keyup", hu);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("keydown", hd);
+      window.removeEventListener("keyup", hu);
+    };
+  }, [gameState, clinicLogOpen]);
 
   // Proximity detection for HUD effects (Brands)
   useEffect(() => {
@@ -644,6 +716,7 @@ useEffect(() => {
       return;
     }
     if (nearbyPatient && nearbyPatient.status === "WAITING") {
+      // start write-up mini-game
       setDialogue({
         speaker: "James",
         message: `Writing up patient: ${nearbyPatient.name}. Insurance: ${nearbyPatient.insurance}.`,
@@ -653,16 +726,8 @@ useEffect(() => {
           p.id === nearbyPatient.id ? { ...p, status: "BEING_HELPED" } : p,
         ),
       );
-      setInventory((prev) => [...prev, `Job for ${nearbyPatient.name}`]);
-      setTimeout(() => {
-        setPatients((prev) =>
-          prev.map((p) =>
-            p.id === nearbyPatient.id
-              ? { ...p, status: "READY_FOR_PICKUP" }
-              : p,
-          ),
-        );
-      }, 15000);
+      setActivePatient(nearbyPatient);
+      setActiveGame("writeup");
       return;
     }
     if (nearbyPatient && nearbyPatient.status === "READY_FOR_PICKUP") {
@@ -721,7 +786,66 @@ useEffect(() => {
       Math.pow(drRobbins.x - playerPos.x, 2) +
         Math.pow(drRobbins.y - playerPos.y, 2),
     );
-        if (distToRobbins < 80) {
+    if (distToRobbins < 80) {
+      // If a patient is following, deliver them to Dr. Robbins
+      const following = patients.find((p) => p.isFollowing);
+      if (following) {
+        // Stop following and move patient to exam room
+        setPatients((prev) =>
+          prev.map((p) =>
+            p.id === following.id
+              ? {
+                  ...p,
+                  isFollowing: false,
+                  status: "WAITING_FOR_LAB",
+                  x: drRobbins.x + 40,
+                  y: drRobbins.y + 20,
+                  targetX: drRobbins.x + 40,
+                  targetY: drRobbins.y + 20,
+                  isMoving: false,
+                }
+              : p,
+          ),
+        );
+
+        if (following.needsEyeExam) {
+          // Start the interactive eye exam for this patient
+          setActiveExamPatient(following);
+          setDialogue({
+            speaker: "Dr. Robbins",
+            message: "I'll take care of the exam.",
+          });
+          setGameState(GameState.EYE_EXAM);
+          return;
+        }
+
+        // If they don't need the full interactive exam, Dr. Robbins will briefly check them
+        setDialogue({
+          speaker: "Dr. Robbins",
+          message: "I'll look them over briefly, bring them back in a sec.",
+        });
+        // After a short delay they'll return to retail to be written up
+        window.setTimeout(() => {
+          setPatients((prev) =>
+            prev.map((p) =>
+              p.id === following.id
+                ? {
+                    ...p,
+                    status: "WAITING",
+                    x: playerPos.x + 60,
+                    y: playerPos.y + 20,
+                    targetX: playerPos.x + 60,
+                    targetY: playerPos.y + 20,
+                    isMoving: true,
+                  }
+                : p,
+            ),
+          );
+        }, 60000);
+
+        return;
+      }
+
       setGameState(GameState.EYE_EXAM);
       return;
     }
@@ -733,7 +857,9 @@ useEffect(() => {
       );
       if (distToKlecker < 80) {
         const lKleck = drKlecker.dialogue
-          ? drKlecker.dialogue[Math.floor(Math.random() * drKlecker.dialogue.length)]
+          ? drKlecker.dialogue[
+              Math.floor(Math.random() * drKlecker.dialogue.length)
+            ]
           : null;
         if (lKleck) {
           setDialogue({ speaker: "Dr. Klecker", message: lKleck });
@@ -774,7 +900,10 @@ useEffect(() => {
         if (obj.type === "coburn_generator") {
           setGameState(GameState.COBURN_GENERATOR);
         }
-        if (obj.type === "cylinder_polisher" || obj.type === "finer_cylinder_combo") {
+        if (
+          obj.type === "cylinder_polisher" ||
+          obj.type === "finer_cylinder_combo"
+        ) {
           setGameState(GameState.CYLINDER_POLISHING);
         }
         if (obj.type === "display_case" || obj.type === "display") {
@@ -792,6 +921,22 @@ useEffect(() => {
       Math.pow(april.x - playerPos.x, 2) + Math.pow(april.y - playerPos.y, 2),
     );
     if (distToApril < 80) {
+      // If a patient is following, deliver them to April
+      const following = patients.find((p) => p.isFollowing);
+      if (following) {
+        setPatients((prev) =>
+          prev.map((p) =>
+            p.id === following.id
+              ? { ...p, isFollowing: false, status: "READY_FOR_PICKUP" }
+              : p,
+          ),
+        );
+        setDialogue({
+          speaker: "April",
+          message: `Thanks, I'll take it from here.`,
+        });
+        return;
+      }
       const lApril = april.dialogue
         ? april.dialogue[Math.floor(Math.random() * april.dialogue.length)]
         : null;
@@ -1372,7 +1517,11 @@ useEffect(() => {
           >
             {obj.type === "reception_computer" && (
               <div className="w-full h-full flex items-center justify-center relative bg-black/40 group-hover:bg-blue-600/20 transition-colors">
-                <ComputerIcon className="w-8 h-8 text-blue-400 group-hover:animate-pulse" />
+                <img
+                  src="/objects/computer.png"
+                  className="w-full h-full object-contain pixelated"
+                  alt="computer"
+                />
                 <div className="absolute top-0 right-0 w-1 h-1 bg-green-500 rounded-full animate-ping" />
               </div>
             )}
@@ -1478,7 +1627,11 @@ useEffect(() => {
               </div>
             )}
             {obj.type === "computer" && (
-              <ComputerIcon className="w-6 h-6 text-blue-100/40" />
+              <img
+                src="/objects/computer.png"
+                className="w-24 h-24 object-contain pixelated"
+                alt="computer"
+              />
             )}
             {obj.type === "hpprinter" && (
               <img
@@ -1531,8 +1684,10 @@ useEffect(() => {
             )}
             {obj.type === "phone" && (
               <div className="relative">
-                <PhoneIcon
-                  className={`w-6 h-6 ${isPhoneRinging ? "text-red-300 animate-ring" : "text-slate-400"}`}
+                <img
+                  src="/objects/phone.png"
+                  className={`w-24 h-24 ${isPhoneRinging ? "animate-ring" : ""} object-contain pixelated`}
+                  alt="phone"
                 />
                 {isPhoneRinging && (
                   <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-400 animate-ping" />
@@ -1739,12 +1894,12 @@ useEffect(() => {
                   : obj.type === "display_case" || obj.type === "display"
                     ? "CLEAN_FRAMES"
                     : obj.type === "reception_computer"
-                        ? "WATCH YOUTUBE"
-                        : obj.type === "coburn_generator"
-                          ? "GENERATE_LENS"
-                          : obj.type === "finer_cylinder_combo"
-                            ? "POLISH_LENS"
-                            : "INTERACT"}
+                      ? "WATCH YOUTUBE"
+                      : obj.type === "coburn_generator"
+                        ? "GENERATE_LENS"
+                        : obj.type === "finer_cylinder_combo"
+                          ? "POLISH_LENS"
+                          : "INTERACT"}
               </div>
             );
           return null;
@@ -1765,6 +1920,19 @@ useEffect(() => {
                     [E]
                   </span>
                   WRITE_UP
+                </div>
+              );
+            if (p.status === "READY_FOR_CHECKOUT")
+              return (
+                <div
+                  key={`action-patient-checkout-${p.id}`}
+                  className="absolute z-50 bg-fuchsia-600 text-white px-4 py-2 border-4 border-white font-black text-[8px] flex items-center gap-3 shadow-[8px_8px_0_0_rgba(0,0,0,1)] animate-bounce"
+                  style={{ left: p.x - 40, top: p.y - 60 }}
+                >
+                  <span className="bg-white text-fuchsia-600 px-2 py-0.5 border-2 border-white">
+                    [E]
+                  </span>
+                  CHECK_OUT
                 </div>
               );
             if (p.status === "READY_FOR_PICKUP")
@@ -1803,6 +1971,22 @@ useEffect(() => {
             );
           return null;
         })()}
+        {dialogue && dialogueTarget && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.9 }}
+            className="absolute z-60 bg-white text-black font-black px-3 py-2 border-2 border-black rounded-2xl shadow-[8px_8px_0_0_rgba(0,0,0,0.8)] pointer-events-none whitespace-pre-wrap text-[8px]"
+            style={{
+              left: dialogueTarget.x,
+              top: dialogueTarget.y - 72,
+              transform: "translateX(-50%)",
+              maxWidth: 180,
+            }}
+          >
+            {dialogue.message}
+          </motion.div>
+        )}
       </div>
       <AnimatePresence>
         {showPhoneFlash && (
@@ -1896,15 +2080,60 @@ useEffect(() => {
           </div>
         )}
         {gameState === GameState.EYE_EXAM && (
-          <EyeExamGame onClose={() => setGameState(GameState.PLAYING)} />
+          <EyeExamGame
+            patient={activeExamPatient}
+            onClose={() => {
+              setGameState(GameState.PLAYING);
+              setActiveExamPatient(null);
+            }}
+            onComplete={(amount) => {
+              // After an exam completes, send the patient back to retail for write-up
+              if (activeExamPatient) {
+                setPatients((prev) =>
+                  prev.map((p) =>
+                    p.id === activeExamPatient.id
+                      ? {
+                          ...p,
+                          status: "WAITING",
+                          x: playerPos.x + 60,
+                          y: playerPos.y + 20,
+                          targetX: playerPos.x + 60,
+                          targetY: playerPos.y + 20,
+                          isMoving: true,
+                          needsEyeExam: false,
+                          wantsVerification: false,
+                        }
+                      : p,
+                  ),
+                );
+              }
+              setActiveExamPatient(null);
+              setGameState(GameState.PLAYING);
+            }}
+          />
         )}
         {gameState === GameState.LENSOMETER && (
           <Lensometer onClose={() => setGameState(GameState.PLAYING)} />
         )}
         {gameState === GameState.COMPUTER && (
           <Computer
+            checkoutPatient={patients.find(
+              (p) => p.status === "READY_FOR_CHECKOUT",
+            )}
             onClose={() => setGameState(GameState.PLAYING)}
-            onCompleteSale={(amount) => console.log(`Processed ${amount}`)}
+            onCompleteSale={(amount) => {
+              setPatients((prev) =>
+                prev.map((p) =>
+                  p.status === "READY_FOR_CHECKOUT"
+                    ? { ...p, status: "COMPLETED", isFollowing: false }
+                    : p,
+                ),
+              );
+              setDialogue({
+                speaker: "Computer",
+                message: `Payment of $${amount.toFixed(2)} complete.`,
+              });
+            }}
           />
         )}
         {gameState === GameState.PHONE && (
@@ -1920,7 +2149,9 @@ useEffect(() => {
           <Coburn2GGenerator onClose={() => setGameState(GameState.PLAYING)} />
         )}
         {gameState === GameState.CYLINDER_POLISHING && (
-          <CylinderPolishingGame onClose={() => setGameState(GameState.PLAYING)} />
+          <CylinderPolishingGame
+            onClose={() => setGameState(GameState.PLAYING)}
+          />
         )}
         {activeGame === "cleaning" && (
           <FrameCleaningGame
@@ -1953,6 +2184,58 @@ useEffect(() => {
               );
               setJamesSpeech("Another happy customer!");
               setTimeout(() => setJamesSpeech(null), 3000);
+            }}
+          />
+        )}
+        {activeGame === "writeup" && activePatient && (
+          <WriteUpGame
+            patientName={activePatient.name}
+            patientSpriteBase={activePatient.spriteBase}
+            insurance={activePatient.insurance}
+            prescription={activePatient.prescription}
+            onClose={() => {
+              setActiveGame(null);
+              setActivePatient(null);
+              setPatients((prev) =>
+                prev.map((p) =>
+                  p.id === activePatient.id ? { ...p, status: "WAITING" } : p,
+                ),
+              );
+            }}
+            onComplete={(total) => {
+              if (!activePatient) return;
+              if (activePatient.needsEyeExam) {
+                setPatients((prev) =>
+                  prev.map((p) =>
+                    p.id === activePatient.id
+                      ? { ...p, isFollowing: true, status: "BEING_HELPED" }
+                      : p,
+                  ),
+                );
+                setDialogue({
+                  speaker: "James",
+                  message: "Follow me to April or Dr. Robbins.",
+                });
+              } else {
+                setPatients((prev) =>
+                  prev.map((p) =>
+                    p.id === activePatient.id
+                      ? {
+                          ...p,
+                          isFollowing: true,
+                          status: "READY_FOR_CHECKOUT",
+                          checkoutAmount: total,
+                        }
+                      : p,
+                  ),
+                );
+                setDialogue({
+                  speaker: "James",
+                  message: "Follow me to the computer so I can check you out.",
+                });
+              }
+              setActiveGame(null);
+              setActivePatient(null);
             }}
           />
         )}
@@ -1997,37 +2280,6 @@ useEffect(() => {
               )}
             </div>
           </motion.div>
-        )}
-      </AnimatePresence>
-      <AnimatePresence>
-        {dialogue && (
-          <>
-            <div
-              className="fixed inset-0 z-90 bg-transparent"
-              onClick={() => setDialogue(null)}
-            />
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 50 }}
-              className="fixed bottom-12 left-1/2 -translate-x-1/2 z-100 w-150 max-w-[90vw] bg-black border-8 border-white p-8 shadow-[12px_12px_0_0_rgba(0,0,0,1)] pixel-border"
-            >
-              <div className="flex flex-col gap-4">
-                <div className="text-[8px] text-blue-400 font-black tracking-[4px] uppercase">
-                  {dialogue.speaker}:
-                </div>
-                <div className="text-white font-black text-lg leading-relaxed italic">
-                  "{dialogue.message}"
-                </div>
-              </div>
-              <button
-                onClick={() => setDialogue(null)}
-                className="absolute bottom-4 right-8 text-[10px] font-black text-yellow-400 animate-pulse"
-              >
-                CLICK ANYWHERE TO CONTINUE -{">"}
-              </button>
-            </motion.div>
-          </>
         )}
       </AnimatePresence>
       {isMobile && (

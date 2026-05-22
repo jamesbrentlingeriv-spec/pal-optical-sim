@@ -10,13 +10,20 @@ import {
   User,
 } from "lucide-react";
 import { useWindowSize } from "../../hooks/useWindowSize";
+import PatientLookup from "./PatientLookup";
+import { Patient } from "../../types";
 
 interface ComputerProps {
   onClose: () => void;
+  checkoutPatient?: Patient | null;
   onCompleteSale: (amount: number) => void;
 }
 
-export default function Computer({ onClose, onCompleteSale }: ComputerProps) {
+export default function Computer({
+  onClose,
+  checkoutPatient,
+  onCompleteSale,
+}: ComputerProps) {
   const { width } = useWindowSize();
   const isMobile = width < 768;
   const scale = isMobile ? Math.min(1, width / 1000) : 1;
@@ -26,11 +33,18 @@ export default function Computer({ onClose, onCompleteSale }: ComputerProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResult, setSearchResult] = useState<any | null>(null);
   const [paymentStep, setPaymentStep] = useState<
-    "IDLE" | "INSERT_CARD" | "PIN_ENTRY" | "PROCESSING" | "SUCCESS"
+    | "IDLE"
+    | "PRICE_ENTRY"
+    | "INSERT_CARD"
+    | "PIN_ENTRY"
+    | "PROCESSING"
+    | "SUCCESS"
   >("IDLE");
+  const [priceInput, setPriceInput] = useState("");
   const [pin, setPin] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const checkoutAmount = checkoutPatient?.checkoutAmount ?? 150;
 
   const handleSearch = () => {
     // Mock insurance lookup
@@ -46,7 +60,9 @@ export default function Computer({ onClose, onCompleteSale }: ComputerProps) {
   };
 
   const startPayment = () => {
-    setPaymentStep("INSERT_CARD");
+    if (!checkoutPatient || !checkoutPatient.checkoutAmount) return;
+    setPaymentStep("PRICE_ENTRY");
+    setPriceInput("");
   };
 
   const handleCardInserted = () => {
@@ -54,6 +70,19 @@ export default function Computer({ onClose, onCompleteSale }: ComputerProps) {
   };
 
   const handleNumberClick = (n: number | string) => {
+    if (paymentStep === "PRICE_ENTRY") {
+      if (typeof n === "number" && priceInput.length < 6) {
+        setPriceInput((prev) => prev + n.toString());
+      }
+      if (n === "*") {
+        setPriceInput((prev) => prev.slice(0, -1));
+      }
+      if (n === "#") {
+        setPriceInput("");
+      }
+      return;
+    }
+
     if (paymentStep === "PIN_ENTRY" && typeof n === "number") {
       if (pin.length < 4) {
         const newPin = pin + n;
@@ -67,18 +96,21 @@ export default function Computer({ onClose, onCompleteSale }: ComputerProps) {
   };
 
   const processPayment = () => {
+    const amount = checkoutPatient?.checkoutAmount ?? 150;
     setPaymentStep("PROCESSING");
     setIsProcessing(true);
     setTimeout(() => {
       setIsProcessing(false);
       setPaymentStep("SUCCESS");
       setShowSuccess(true);
-      onCompleteSale(150);
+      onCompleteSale(amount);
       setTimeout(() => {
         setShowSuccess(false);
         setPaymentStep("IDLE");
+        setPriceInput("");
         setPin("");
         setActiveTab("insurance");
+        onClose();
       }, 3000);
     }, 3000);
   };
@@ -147,97 +179,9 @@ export default function Computer({ onClose, onCompleteSale }: ComputerProps) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="p-10 space-y-8 h-full flex flex-col"
+                className="p-6 h-full"
               >
-                <div>
-                  <h1 className="text-xl font-black text-white underline decoration-4 decoration-blue-500 underline-offset-8">
-                    PATIENT LOOKUP
-                  </h1>
-                  <p className="text-blue-400 text-[6px] mt-4 uppercase animate-pulse">
-                    Scanning server database...
-                  </p>
-                </div>
-
-                <div className="flex gap-4">
-                  <input
-                    type="text"
-                    placeholder="NAME..."
-                    className="flex-1 pl-4 pr-4 py-4 bg-black border-4 border-white text-white text-[10px] font-black focus:border-blue-500 outline-none placeholder:text-white/20"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                  <button
-                    onClick={handleSearch}
-                    className="px-8 py-4 bg-white text-black font-black hover:bg-blue-500 hover:text-white transition-all shadow-[6px_6px_0_0_black]"
-                  >
-                    SEARCH
-                  </button>
-                </div>
-
-                {searchResult ? (
-                  <motion.div
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    className="border-4 border-white p-6 bg-black relative"
-                  >
-                    <div className="grid grid-cols-2 gap-8">
-                      <div className="space-y-6">
-                        <div>
-                          <label className="text-[6px] text-blue-400 uppercase">
-                            IDENTIFIER
-                          </label>
-                          <div className="text-lg font-black text-white">
-                            {searchResult.name}
-                          </div>
-                        </div>
-                        <div>
-                          <label className="text-[6px] text-blue-400 uppercase">
-                            PROVIDER
-                          </label>
-                          <div className="text-sm font-black text-white italic">
-                            {searchResult.insurance}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="space-y-6 text-right">
-                        <div>
-                          <label className="text-[6px] text-blue-400 uppercase">
-                            COVERAGE
-                          </label>
-                          <div className="text-lg font-black text-green-500">
-                            {searchResult.coverage}
-                          </div>
-                        </div>
-                        <div>
-                          <label className="text-[6px] text-blue-400 uppercase">
-                            CO-PAY
-                          </label>
-                          <div className="text-lg font-black text-white">
-                            {searchResult.copay}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mt-8 pt-6 border-t-2 border-white/20 flex justify-between items-center">
-                      <div className="flex items-center gap-2 text-green-500 text-[8px] font-black underline">
-                        [ STATUS: VERIFIED ]
-                      </div>
-                      <button
-                        onClick={() => setActiveTab("payment")}
-                        className="text-white text-[8px] font-black border-2 border-white px-3 py-2 hover:bg-white hover:text-black transition-all"
-                      >
-                        GOTO CHECKOUT -{">"}
-                      </button>
-                    </div>
-                  </motion.div>
-                ) : (
-                  <div className="flex-1 flex flex-col items-center justify-center opacity-10">
-                    <Search className="w-20 h-20 mb-4" />
-                    <span className="text-[8px] font-black uppercase tracking-[4px]">
-                      No Data Selected
-                    </span>
-                  </div>
-                )}
+                <PatientLookup />
               </motion.div>
             )}
 
@@ -273,7 +217,28 @@ export default function Computer({ onClose, onCompleteSale }: ComputerProps) {
                                 TOTAL
                               </div>
                               <div className="text-2xl font-black text-green-400">
-                                $150.00
+                                $
+                                {checkoutPatient?.checkoutAmount?.toFixed(2) ??
+                                  "--"}
+                              </div>
+                              <div className="text-[8px] text-green-200 mt-2">
+                                {checkoutPatient
+                                  ? `Patient: ${checkoutPatient.name}`
+                                  : "NO PATIENT IN QUEUE"}
+                              </div>
+                            </div>
+                          )}
+
+                          {paymentStep === "PRICE_ENTRY" && (
+                            <div className="text-center space-y-3">
+                              <div className="text-[8px] font-black uppercase text-green-400">
+                                ENTER PRICE THEN SWIPE
+                              </div>
+                              <div className="text-[18px] font-black text-white tracking-[0.2em] bg-black/40 p-3 rounded-lg">
+                                {priceInput || "____"}
+                              </div>
+                              <div className="text-[6px] text-green-300">
+                                Use keypad to type the amount shown above.
                               </div>
                             </div>
                           )}
@@ -380,11 +345,52 @@ export default function Computer({ onClose, onCompleteSale }: ComputerProps) {
                         {paymentStep === "IDLE" && (
                           <button
                             onClick={startPayment}
-                            className="w-full py-4 bg-white text-black font-black hover:bg-green-500 hover:text-white transition-all shadow-[6px_6px_0_0_black] text-[10px] flex items-center justify-center gap-3"
+                            disabled={!checkoutPatient?.checkoutAmount}
+                            className={`w-full py-4 font-black transition-all shadow-[6px_6px_0_0_black] text-[10px] flex items-center justify-center gap-3 ${
+                              checkoutPatient?.checkoutAmount
+                                ? "bg-white text-black hover:bg-green-500 hover:text-white"
+                                : "bg-slate-700 text-slate-300 cursor-not-allowed"
+                            }`}
                           >
                             <CreditCard className="w-4 h-4" />
-                            START CHECKOUT
+                            BEGIN CHECKOUT
                           </button>
+                        )}
+
+                        {paymentStep === "PRICE_ENTRY" && (
+                          <div className="space-y-3">
+                            <button
+                              onClick={handleCardInserted}
+                              disabled={
+                                priceInput !==
+                                (checkoutPatient?.checkoutAmount ?? 0).toFixed(
+                                  0,
+                                )
+                              }
+                              className={`w-full py-4 font-black transition-all shadow-[6px_6px_0_0_black] text-[10px] flex items-center justify-center gap-3 ${
+                                priceInput ===
+                                (checkoutPatient?.checkoutAmount ?? 0).toFixed(
+                                  0,
+                                )
+                                  ? "bg-white text-black hover:bg-green-500 hover:text-white"
+                                  : "bg-slate-700 text-slate-300 cursor-not-allowed"
+                              }`}
+                            >
+                              <CreditCard className="w-4 h-4" />
+                              SWIPE CARD
+                            </button>
+                            <div className="bg-blue-900/20 border-2 border-blue-500/50 p-4 rounded-lg">
+                              <p className="text-[8px] text-blue-400 font-black">
+                                ACTION: TYPE THE PRICE THEN SWIPE CARD
+                              </p>
+                              <p className="text-[6px] text-green-300 mt-2">
+                                Expected: $
+                                {(checkoutPatient?.checkoutAmount ?? 0).toFixed(
+                                  0,
+                                )}
+                              </p>
+                            </div>
+                          </div>
                         )}
 
                         {paymentStep === "INSERT_CARD" && (
@@ -432,16 +438,20 @@ export default function Computer({ onClose, onCompleteSale }: ComputerProps) {
                         <div className="space-y-1 mt-2">
                           <div className="flex justify-between text-[4px] font-bold text-black/60">
                             <span>ITEM_01</span>
-                            <span>$120.00</span>
+                            <span>
+                              ${Math.max(0, checkoutAmount - 30).toFixed(2)}
+                            </span>
                           </div>
                           <div className="flex justify-between text-[4px] font-bold text-black/60">
                             <span>CO-PAY</span>
-                            <span>$30.00</span>
+                            <span>
+                              ${Math.min(checkoutAmount, 30).toFixed(2)}
+                            </span>
                           </div>
                         </div>
                         <div className="mt-auto pt-2 border-t-2 border-black border-dashed flex justify-between text-[8px] font-black text-black">
                           <span>TOTAL</span>
-                          <span>$150.00</span>
+                          <span>${checkoutAmount.toFixed(2)}</span>
                         </div>
                         <div className="absolute top-0 left-0 w-full h-4 bg-linear-to-b from-black/5 to-transparent" />
                       </motion.div>
