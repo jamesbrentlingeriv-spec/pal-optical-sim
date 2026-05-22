@@ -22,7 +22,7 @@ export const NPCS: NPC[] = [
     y: 180,
     avatar:
       "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=150&h=150",
-    spriteBase: "tracy",
+    spriteBase: "characters/tracy/An_older_lady_with_long",
     dialogue: [
       "Have you seen what that idiot Trump said now?!",
       "James. Find your files while you ain't doing nothing.",
