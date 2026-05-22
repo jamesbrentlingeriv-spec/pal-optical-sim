@@ -56,28 +56,17 @@ export default function MainMenu({ onStart, onOptions }: MainMenuProps) {
           }}
         ></div>
 
-        <motion.div
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="flex flex-col items-center justify-center z-20 mb-12"
-        >
-          <motion.div
-            animate={{ rotate: [0, 5, -5, 0] }}
-            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-            className="w-32 h-32 flex items-center justify-center overflow-hidden mb-6"
-          >
-            <img
-              src="/IAMJAMES.png"
-              alt="Logo"
-              className="w-full h-full object-contain pixelated"
-            />
-          </motion.div>
-
-          <h1 className="text-7xl font-black tracking-tight text-yellow-300 drop-shadow-[8px_8px_0_rgba(0,0,0,1)] italic mb-8 text-center">
-            PAL OPTICAL <br />
-            <span className="text-yellow-300">SIMULATOR</span>
-          </h1>
+<motion.div
+           initial={{ y: -50, opacity: 0 }}
+           animate={{ y: 0, opacity: 1 }}
+           transition={{ delay: 0.2 }}
+           className="flex flex-col items-center justify-center z-20 mb-12"
+         >
+           <img
+             src="/palopti.gif"
+             alt="PAL OPTICAL SIMULATOR"
+             className="w-full max-w-2xl h-auto pixelated mb-8"
+           />
 
           <p className="text-yellow-400 text-sm font-black uppercase tracking-[12px] animate-pulse mb-8">
             PRESS START TO BEGIN
