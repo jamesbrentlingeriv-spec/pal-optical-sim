@@ -14,6 +14,12 @@ export enum GameState {
   COBURN_GENERATOR,
   CYLINDER_POLISHING,
   CLINIC_LOG,
+  MODE_SELECTION,
+}
+
+export enum GameMode {
+  CAREER = "CAREER",
+  FREE = "FREE",
 }
 
 export interface Patient {
@@ -75,4 +81,21 @@ export interface NPC {
 export interface Position {
   x: number;
   y: number;
+}
+
+export interface LabJob {
+  id: string;
+  patientId: string;
+  patientName: string;
+  frameName: string;
+  lensType: string;
+  materialType: string;
+  createdAt: number;
+}
+
+export interface DayFinancials {
+  cashRevenue: number;
+  cardRevenue: number;
+  dockedPenalties: number;
+  transactions: { amount: number; method: "cash" | "card"; time: string }[];
 }

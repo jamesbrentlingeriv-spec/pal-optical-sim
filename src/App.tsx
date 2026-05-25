@@ -10,21 +10,18 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { GameState } from "./types";
+import { GameState, GameMode } from "./types";
 import MainMenu from "./components/UI/MainMenu";
 import CharacterSelection from "./components/UI/CharacterSelection";
+import ModeSelection from "./components/UI/ModeSelection";
 import GameWorld from "./components/GameWorld";
-import Lensometer from "./components/UI/Lensometer";
-import Computer from "./components/UI/Computer";
 import Options from "./components/UI/Options";
-import Phone from "./components/UI/Phone";
 
 export default function App() {
   const [gameState, setGameState] = useState<GameState>(GameState.MENU);
   const [showSplash, setShowSplash] = useState(true);
-  const [selectedCharacterId, setSelectedCharacterId] = useState<string | null>(
-    null,
-  );
+  const [selectedCharacterId, setSelectedCharacterId] = useState<string | null>(null);
+  const [gameMode, setGameMode] = useState<GameMode>(GameMode.CAREER);
   const [audioSettings, setAudioSettings] = useState({
     volume: 0.5,
     muted: false,
@@ -87,6 +84,11 @@ export default function App() {
 
   const handleCharacterSelect = (id: string) => {
     setSelectedCharacterId(id);
+    setGameState(GameState.MODE_SELECTION);
+  };
+
+  const handleModeSelect = (mode: GameMode) => {
+    setGameMode(mode);
     setGameState(GameState.PLAYING);
   };
 
@@ -96,6 +98,7 @@ export default function App() {
 
   const handleBackToMenu = () => {
     setGameState(GameState.MENU);
+    setSelectedCharacterId(null);
   };
 
   return (
@@ -138,6 +141,14 @@ export default function App() {
           />
         )}
 
+        {!showSplash && gameState === GameState.MODE_SELECTION && (
+          <ModeSelection
+            key="mode"
+            onSelect={handleModeSelect}
+            onBack={handleBackToMenu}
+          />
+        )}
+
         {!showSplash && gameState === GameState.OPTIONS && (
           <Options
             key="options"
@@ -165,6 +176,7 @@ export default function App() {
               audioSettings={audioSettings}
               onUpdateAudio={setAudioSettings}
               playerCharacterId={selectedCharacterId}
+              gameMode={gameMode}
               bgMusicRef={audioRef}
               phoneRingRef={phoneRingRef}
             />

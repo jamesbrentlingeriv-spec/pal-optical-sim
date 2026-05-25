@@ -444,19 +444,19 @@ export const SHOP_OBJECTS = [
   {
     id: "coburn_generator",
     type: "coburn_generator",
-    x: 2280,
+    x: 2250,
     y: 180,
-    width: 100,
+    width: 120,
     height: 100,
   },
   {
     // Merged: finer now includes cylinder polishing functionality at finer.png coordinates
     id: "finer",
     type: "finer_cylinder_combo",
-    x: 2250,
+    x: 2220,
     y: 320,
-    width: 80,
-    height: 80,
+    width: 120,
+    height: 100,
   },
 
   // Dispensing Tables (Bottom Area)
